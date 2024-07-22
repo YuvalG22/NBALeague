@@ -2,7 +2,6 @@
 #include "league.h"
 /*
 * C++ project- NBA league
-* check check check
 */
 
 // Statics
@@ -35,7 +34,7 @@ char* getStrExactName(const char* msg);
 char* getDynStr(char* str);
 char* myGets(char* buffer, int size, FILE* source);
 
-enum eChoise { NEW_TEAM = 1, NEW_WORKER, NEW_MATCH, PRINT_TEAM, PRINT_WORKER, PRINT_MATCH };
+enum eChoise { NEW_TEAM = 1, NEW_WORKER, NEW_MATCH, PRINT_TEAM, PRINT_WORKER, PRINT_MATCH, GO_BACK };
 enum eChoiseInner { NEW_OWNER = 1, NEW_PLAYER, NEW_REFREE };
 
 
@@ -45,15 +44,6 @@ int main()
 	showLeagueMenu(*l1);
 	return 0;
 }
-
-
-
-
-
-
-
-
-
 
 /* Helpers */
 
@@ -94,7 +84,7 @@ void showLeagueMenu(League& l)
 			break;
 		}
 		}
-	} while (choise < 1 || choise > 2);
+	} while (choise != -1);
 }
 
 
@@ -111,6 +101,7 @@ void showDistrictMenu(League& l, District& d)
 		cout << "4) Print Team" << endl;
 		cout << "5) Print Worker" << endl;
 		cout << "6) Print Match" << endl;
+		cout << "7) Go back to choose district" << endl;
 		cout << "-1) Exit" << endl;
 		cin >> selection;
 
@@ -156,6 +147,12 @@ void showDistrictMenu(League& l, District& d)
 			const Match* matches = d.getMatches();
 			for (int i = 0; i < District::NUMBER_OF_GAMES_SEASON; i++)
 				cout << matches[i];
+			break;
+		}
+
+		case GO_BACK:
+		{
+			showLeagueMenu(l);
 			break;
 		}
 

@@ -42,4 +42,7 @@ public:
 	
 };
 
+Match* createMatch(const Team* teams, int numOfTeams);
+void printTeams(const Team* teams);
+
 #endif // __MATCH_H
