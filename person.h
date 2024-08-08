@@ -9,6 +9,7 @@ class Person
 	public:
 		enum  eGenderType { MALE, FEMALE, OTHER, eNumOfTypes };
 		static constexpr const char* genders[eNumOfTypes] = { "Male", "Female", "Other" };
+		static constexpr int MAX_STR_LEN = 255;
 
 		Person();
 		Person(const int pid, const char* name, const Date dob, const eGenderType gender, const char* address);

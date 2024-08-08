@@ -2,9 +2,10 @@
 #include "league.h"
 
 League::League() : currentNumberOfWorkers(0), currentNumberOfOwners(0) {
-    for (int i = 0; i < NUMBER_OF_DISTRICTS; ++i) {
-        pAllDistricts[i] = nullptr;
-    }
+
+    pAllDistricts[0] = new District("East", 0, 0);
+    pAllDistricts[1] = new District("West", 0, 0);
+
     allWorkers = new Person * [currentNumberOfWorkers];
     allOwners = new Owner * [currentNumberOfOwners];
 }

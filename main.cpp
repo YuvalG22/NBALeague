@@ -10,7 +10,7 @@ static constexpr int EXIT = -1;
 
 // Helpers
 void showLeagueMenu(League& l);
-void showDistrictMenu(League& l, District& d);
+void showDistrictMenu(League& l, District& d, const char* districtName);
 void showNewWorkerMenu(League& l);
 void printTeams(const Team* teams);
 
@@ -65,13 +65,13 @@ void showLeagueMenu(League& l)
 		{
 		case (District::EAST + 1):
 		{
-			showDistrictMenu(l, d[District::EAST]);
+			showDistrictMenu(l, d[District::EAST], "East");
 			break;
 		}
 
 		case District::WEST + 1:
 		{
-			showDistrictMenu(l, d[District::WEST]);
+			showDistrictMenu(l, d[District::WEST], "West");
 			break;
 		}
 
@@ -88,11 +88,11 @@ void showLeagueMenu(League& l)
 }
 
 
-void showDistrictMenu(League& l, District& d)
+void showDistrictMenu(League& l, District& d, const char* districtName)
 {
 	int selection;
 	cout << "*** NBA League Creator ***" << endl;
-	cout << "*** each NBA League has 2 districts (East, West) ***" << endl;
+	cout << "*** Current District: " << districtName << " ***" << endl;
 	do
 	{
 		cout << "1) Create a new Team" << endl;
@@ -295,25 +295,44 @@ Refree* createRefree()
 	return new Refree(Employee(pid,name,*date,gender,address,salary), rank, numOfMatches);
 }
 
-Team* createTeam(Person** allPlayers, const int numberOfPlayers, Owner** allOwners, const int numberOfOwners)
-{
-	/* To do */
+#include <iostream>
+#include "league.h"
+#include "team.h"
+
+Team* createTeam(Person** allPlayers, const int numberOfPlayers, Owner** allOwners, const int numberOfOwners) {
+	if (allOwners == nullptr || numberOfOwners == 0) {
+		cout << "No owners available. Cannot create team." << endl;
+		return nullptr;
+	}
+
 	int selected = 0, numOfSeats;
 	char teamName[MAX_STR_LEN];
-	cout << "Please enter team's name" << endl;
+	cout << "Please enter team's name: ";
+	cin.ignore();
 	cin.getline(teamName, MAX_STR_LEN);
-	for (int i = 0; i < numberOfOwners; i++) // Iterate over owners and select owner
-	{
-		const Owner* owner = allOwners[i];
+
+	// List all available owners
+	cout << "Select an owner from the list below:" << endl;
+	for (int i = 0; i < numberOfOwners; i++) {
+		cout << i + 1 << ") " << allOwners[i]->getName() << endl;
 	}
+
+	do {
+		selected = getIntWithPrompt("Please enter the number corresponding to the owner:") - 1;
+	} while (selected < 0 || selected >= numberOfOwners);
+
 	Owner o = *allOwners[selected];
+
 	char courtName[MAX_STR_LEN];
-	cout << "Please enter court's name" << endl;
+	cout << "Please enter court's name: ";
 	cin.getline(courtName, MAX_STR_LEN);
-	numOfSeats = getIntWithPrompt("Please enter court's number of seats");
-	// Need to add Players to team
+
+	numOfSeats = getIntWithPrompt("Please enter court's number of seats:");
+
+	// Create and return the new team
 	return new Team(teamName, o, Court(courtName, numOfSeats));
 }
+
 
 Match* createMatch(const Team* teams, int numOfTeams)
 {
@@ -383,7 +402,7 @@ float getFloatWithPrompt(const char* message)
 	return num;
 }
 
-int getEnumSelection(const char* message, const char* const types[], const int numOfTypes)
+/*int getEnumSelection(const char* message, const char* const types[], const int numOfTypes)
 {
 	int enumChoice;
 	do
@@ -397,7 +416,7 @@ int getEnumSelection(const char* message, const char* const types[], const int n
 	} while (enumChoice < 1 || enumChoice > numOfTypes);
 
 	return enumChoice - 1;  // Adjust to zero-based index
-}
+}*/
 
 char* getStrExactName(const char* msg)
 {

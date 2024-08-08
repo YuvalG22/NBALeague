@@ -21,6 +21,8 @@ public:
 	const ePositionType getPlayerPosition() const;
 	const int getPlayerTitles() const;
 	const int getPlayerMatches() const;
+	int getEnumSelection(const char* message, const char* const types[], const int numOfTypes);
+	// todo createPlayer
 
 	void setPlayerNumber(const int number);
 	void setPlayerPosition(const ePositionType pos);
@@ -30,7 +32,7 @@ public:
 	const Player& operator+(); // Add title
 	virtual void toOs(ostream& os) const override;
 	friend ostream& operator<<(ostream& os, const Player& player);
-
+	
 protected:
 	int playerNumber;
 	ePositionType position;
