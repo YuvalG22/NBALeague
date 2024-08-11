@@ -79,11 +79,11 @@ Person& Person::operator=(const Person& other) {
 }
 
 ostream& operator<<(std::ostream& os, const Person& s) {
-    os << "Person ID: " << s.person_id << endl;
+    const char* name = typeid(s).name();
     os << "Name: " << s.name << endl;
     os << "Date of Birth: " << s.dateOfBirth << endl;
-    os << "Gender: " << Person::genders[s.gender] << endl;
-    os << "Address: " << s.address << endl;
+    os << "Gender: " << s.genders[s.getGender()] << endl;
+    os << "Role: " << name + 6 << endl;
     os << "\n";
     s.toOs(os);
     return os;

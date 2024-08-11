@@ -3,8 +3,8 @@
 
 Match::Match() : refree(nullptr), teamA(nullptr), teamB(nullptr), resultA(0), resultB(0), court(nullptr) {}
 
-Match::Match(const Refree& ref, const Team& teamA, const Team& teamB, const Court& court, const Date gameDate)
-    : refree(new Refree(ref)), teamA(new Team(teamA)), teamB(new Team(teamB)), court(new Court(court)), resultA(0), resultB(0), gameDate(gameDate) {
+Match::Match(const Refree& ref, const Team& teamA, const Team& teamB, const int resA, const int resB, const Court& court, const Date gameDate)
+    : refree(new Refree(ref)), teamA(new Team(teamA)), teamB(new Team(teamB)), court(new Court(court)), resultA(resA), resultB(resB), gameDate(gameDate) {
 }
 
 // Match destructor
@@ -67,14 +67,12 @@ void Match::setDate(const Date& date) {
 
 // Overloaded << operator to print Match details
 ostream& operator<<(ostream& os, const Match& match) {
-    os << "Match Details:" << endl;
-    os << "Refree: " << match.getRefree() << endl;
-    os << "Team A: " << match.getTeamA() << endl;
-    os << "Team B: " << match.getTeamB() << endl;
-    os << "Result: " << match.getResultA() << " - " << match.getResultB() << endl;
+    os << "Team A: " << match.getTeamA().getName() << " (" << match.getTeamA().getNumberOfWins() << " - " << match.getTeamA().getNumberOfLoses() << ") " << endl;
+    os << "Team B: " << match.getTeamB().getName() << " (" << match.getTeamB().getNumberOfWins() << " - " << match.getTeamB().getNumberOfLoses() << ") " << endl;
+    os << "Result: " << match.getTeamA().getName() << " " << match.getResultA() << " - " << match.getResultB() << " " << match.getTeamB().getName() << endl;
     os << "Date: " << match.getDate() << endl;
-    if (match.court) {
-        os << "Court: " << match.getCourt() << endl;
-    }
+    os << "Court: " << match.getCourt() << endl;
+    os << "Refree: " << match.getRefree().getName() << endl;
+    os << "----------------------------" << endl;
     return os;
 }

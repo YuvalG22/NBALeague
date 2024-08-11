@@ -20,7 +20,7 @@ protected:
 
 public:
 	Team();
-	Team(const char* teamName, const Owner& owner, const Court& court, const Player* players=nullptr);
+	Team(const char* teamName, const Owner& owner, const Court& court, Player** players, int numberOfPlayers);
 	Team(const Team& other);
 	Team(Team&& other);
 	~Team();
@@ -35,11 +35,12 @@ public:
 	const int getNumberOfWins() const;
 	const int getNumberOfLoses() const;
 	const int getNumberOfPlayers() const;
+	const Court getCourt() const;
 
 	const Team& operator+(const Player& other); //Add Player
 	Team& operator=(const Team& other);
 	friend ostream& operator<<(ostream& os, const Team& team);
-	void copyPlayers(const Player* players);
+	void copyPlayers(Player** players, int numberOfPlayers);
 	
 };
 

@@ -3,7 +3,7 @@
 #include <iostream>
 using namespace std;
 
-Court::Court() {
+Court::Court() : courtName(nullptr), numberOfSeats(0) {
 
 }
 

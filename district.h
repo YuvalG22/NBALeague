@@ -13,14 +13,18 @@ public:
 	static constexpr int NUMBER_OF_GAMES_SEASON = 72;
 	enum  eAreaType { EAST, WEST, eNumOfTypes };
 	const char* areas[eNumOfTypes] = { "East", "West"};
+	District();
 	District(const char* area, const int currentNumberOfMatches, const int currentNumberOfTeams);
+	District(const District& other);
 	const District& operator+(const Team& toAdd);
 	const District& operator+(const Match& toAdd);
 
 	const eAreaType getArea() const { return area; }
-	const Team* getTeams() { return pAllTeams; }
-	const Match* getMatches() { return pAllMatches; }
+	Team* getTeams() { return pAllTeams; }
+	Match* getMatches() { return pAllMatches; }
 	void setArea(const eAreaType area);
+	const int getNumOfTeams() const;
+	const int getNumOfMatches() const;
 
 	friend ostream& operator<<(ostream& os, const District& district);
 

@@ -1,5 +1,6 @@
 #pragma warning(disable: 4996)
 #include "league.h"
+
 /*
 * C++ project- NBA league
 */
@@ -7,10 +8,9 @@
 // Statics
 static constexpr int MAX_STR_LEN = 255;
 static constexpr int EXIT = -1;
-
 // Helpers
 void showLeagueMenu(League& l);
-void showDistrictMenu(League& l, District& d, const char* districtName);
+void showDistrictMenu(League& l, District* d, const char* districtName);
 void showNewWorkerMenu(League& l);
 void printTeams(const Team* teams);
 
@@ -22,7 +22,7 @@ Owner* createOwner();
 Player* createPlayer();
 Refree* createRefree();
 Team* createTeam(Person** allPlayers, const int numberOfPlayers, Owner** allOwners, const int numberOfOwners);
-Match* createMatch(const Team* teams, int numOfTeams );
+Match* createMatch(Team* teams, int numOfTeams, Person** allWorkers, const int numberOfWorkers);
 
 
 
@@ -50,7 +50,8 @@ int main()
 void showLeagueMenu(League& l)
 {
 	int choise;
-	District* d = l.getDistricts();
+	District* east = l.getDistricts()[0];
+	District* west = l.getDistricts()[1];
 	cout << "*** NBA League Creator ***" << endl;
 	cout << "*** each NBA League has 2 districts (East, West) ***" << endl;
 	do
@@ -65,13 +66,13 @@ void showLeagueMenu(League& l)
 		{
 		case (District::EAST + 1):
 		{
-			showDistrictMenu(l, d[District::EAST], "East");
+			showDistrictMenu(l, east, "East");
 			break;
 		}
 
 		case District::WEST + 1:
 		{
-			showDistrictMenu(l, d[District::WEST], "West");
+			showDistrictMenu(l, west, "West");
 			break;
 		}
 
@@ -87,8 +88,7 @@ void showLeagueMenu(League& l)
 	} while (choise != -1);
 }
 
-
-void showDistrictMenu(League& l, District& d, const char* districtName)
+void showDistrictMenu(League& l, District* d, const char* districtName)
 {
 	int selection;
 	cout << "*** NBA League Creator ***" << endl;
@@ -98,21 +98,35 @@ void showDistrictMenu(League& l, District& d, const char* districtName)
 		cout << "1) Create a new Team" << endl;
 		cout << "2) Create a new Worker (Owner | Refree | Player)" << endl;
 		cout << "3) Create a new Match" << endl;
-		cout << "4) Print Team" << endl;
-		cout << "5) Print Worker" << endl;
-		cout << "6) Print Match" << endl;
+		cout << "4) Print Teams" << endl;
+		cout << "5) Print Workers" << endl;
+		cout << "6) Print Matches" << endl;
 		cout << "7) Go back to choose district" << endl;
 		cout << "-1) Exit" << endl;
 		cin >> selection;
+		cout << "-----------------------------" << endl;
 
 		switch (selection)
 		{
 		case NEW_TEAM:
 		{
 			cout << "*** Team Creation ***" << endl;
-			Team* t = createTeam(l.getAllWorkers(), l.getCurrentNumberOfWorkers(), l.getAllOwners(), l.getCurrentNumberOfWorkers());
-			d + *t;
-			break;
+			if (l.getCurrentNumberOfOwners() == 0 || l.getCurrentNumberOfPlayers() == 0) {
+				if (l.getCurrentNumberOfOwners() == 0) {
+					cout << "No owners available. Please create owner before creating a team." << endl;
+				}
+				if (l.getCurrentNumberOfPlayers() == 0) {
+					cout << "No players available. Please create players before creating a team." << endl;
+				}
+				cout << endl;
+				cout << endl;
+				showDistrictMenu(l, d, districtName);
+			}
+			else {
+				Team* t = createTeam(l.getAllWorkers(), l.getCurrentNumberOfWorkers(), l.getAllOwners(), l.getCurrentNumberOfOwners());
+				*d + *t;
+				break;
+			}
 		}
 
 		case NEW_WORKER:
@@ -124,13 +138,29 @@ void showDistrictMenu(League& l, District& d, const char* districtName)
 		case NEW_MATCH:
 		{
 			cout << "*** Match Creation ***" << endl;
-			createMatch(d.getTeams(), d.NUMBER_OF_TEAMS);
-			break;
+			if ((*d).getNumOfTeams() < 2 || l.getCurrentNumberOfReferees() == 0) {
+				if ((*d).getNumOfTeams() < 2) {
+					cout << "No teams available. Please create at least 2 teams before creating a match." << endl;
+				}
+				if (l.getCurrentNumberOfReferees() == 0) {
+					cout << "No referees available. Please create a referee before creating a match." << endl;
+				}
+				cout << endl;
+				cout << endl;
+				showDistrictMenu(l, d, districtName);
+			}
+			else {
+				Match* m = createMatch((*d).getTeams(), (*d).getNumOfTeams(), l.getAllWorkers(), l.getCurrentNumberOfWorkers());
+				*d + *m;
+				break;
+			}
 		}
 
 		case PRINT_TEAM:
 		{
-			printTeams(d.getTeams());
+			const Team* teams = (*d).getTeams();
+			for (int i = 0; i < (*d).getNumOfTeams(); i++)
+				cout << (teams[i]) << endl;
 			break;
 		}
 
@@ -139,14 +169,19 @@ void showDistrictMenu(League& l, District& d, const char* districtName)
 			Person** workers = l.getAllWorkers();
 			for (int i = 0; i < l.getCurrentNumberOfWorkers(); i++)
 				cout << *(workers[i]) << endl;
+
+			Owner** owners = l.getAllOwners();
+			for (int i = 0; i < l.getCurrentNumberOfOwners(); i++)
+				cout << *(owners[i]) << endl;
+
 			break;
 		}
 
 		case PRINT_MATCH:
 		{
-			const Match* matches = d.getMatches();
-			for (int i = 0; i < District::NUMBER_OF_GAMES_SEASON; i++)
-				cout << matches[i];
+			const Match* matches = (*d).getMatches();
+			for (int i = 0; i < (*d).getNumOfMatches(); i++)
+				cout << matches[i] << endl;
 			break;
 		}
 
@@ -299,13 +334,11 @@ Refree* createRefree()
 #include "league.h"
 #include "team.h"
 
-Team* createTeam(Person** allPlayers, const int numberOfPlayers, Owner** allOwners, const int numberOfOwners) {
-	if (allOwners == nullptr || numberOfOwners == 0) {
-		cout << "No owners available. Cannot create team." << endl;
-		return nullptr;
-	}
-
-	int selected = 0, numOfSeats;
+Team* createTeam(Person** allWorkers, const int numberOfWorkers, Owner** allOwners, const int numberOfOwners) {
+	int numOfPlayers = 0;
+	int numOfTeamPlayers = 0;
+	int selected = 0;
+	int numOfSeats = 0;
 	char teamName[MAX_STR_LEN];
 	cout << "Please enter team's name: ";
 	cin.ignore();
@@ -316,63 +349,147 @@ Team* createTeam(Person** allPlayers, const int numberOfPlayers, Owner** allOwne
 	for (int i = 0; i < numberOfOwners; i++) {
 		cout << i + 1 << ") " << allOwners[i]->getName() << endl;
 	}
-
 	do {
 		selected = getIntWithPrompt("Please enter the number corresponding to the owner:") - 1;
 	} while (selected < 0 || selected >= numberOfOwners);
-
 	Owner o = *allOwners[selected];
 
+	// Set court
 	char courtName[MAX_STR_LEN];
 	cout << "Please enter court's name: ";
 	cin.getline(courtName, MAX_STR_LEN);
-
 	numOfSeats = getIntWithPrompt("Please enter court's number of seats:");
+	cout << endl;
 
-	// Create and return the new team
-	return new Team(teamName, o, Court(courtName, numOfSeats));
+	// Collect all available players
+	for (int i = 0; i < numberOfWorkers; i++) {
+		if (Player* p = dynamic_cast<Player*>(allWorkers[i])) {
+			numOfPlayers++;
+		}
+	}
+	Player** players = new Player * [numOfPlayers];
+	int playerIndex = 0;
+	for (int i = 0; i < numberOfWorkers; i++) {
+		if (Player* p = dynamic_cast<Player*>(allWorkers[i])) {
+			players[playerIndex++] = p;
+		}
+	}
+
+	//Add players to team
+	int option;
+	int selectedPlayer;
+	Player** teamPlayers = new Player * [numOfPlayers];
+	cout << "Please add players to the team" << endl;
+	do {
+		for (int i = 0; i < numOfPlayers; i++) {
+			cout << i + 1 << ") " << players[i]->getName() << endl;
+		}
+		selected = getIntWithPrompt("Please enter the number corresponding to the player:") - 1;
+		if (selected >= 0 && selected < numOfPlayers) {
+			bool isPicked = false;
+			for (int i = 0; i < numOfTeamPlayers; ++i) {
+				if (teamPlayers[i] == players[selected]) {
+					isPicked = true;
+					break;
+				}
+			}
+			if (!isPicked) {
+				teamPlayers[numOfTeamPlayers++] = players[selected];
+			}
+			else {
+				cout << "Player already selected. Please choose another player." << endl;
+			}
+		}
+		option = getIntWithPrompt("Add more players? 1 - yes, 0 - no");
+		cout << endl;
+	} while (option != 0);
+	
+	Team* newTeam = new Team(teamName, o, Court(courtName, numOfSeats), teamPlayers, numOfTeamPlayers);
+	delete[] players;
+	delete[] teamPlayers;
+	return newTeam;
 }
 
 
-Match* createMatch(const Team* teams, int numOfTeams)
+Match* createMatch(Team* teams, int numOfTeams, Person** allWorkers, const int numberOfWorkers)
 {
-	//Refree* ref;
-	//Date* date;
-	Team* teamA, * teamB;
-	int resultA, resultB, result, choise;
-	printTeams(teams);
-	for (int i = 0; i < 2; i++)
-	{
-		do
-		{
-			if (i == 0)
-			{
-				cout << "please choose home team: " << endl;
-			}
-			else
-			{
-				cout << "please choose away team: " << endl;
-			}
-			cin >> choise;
-		} while (choise > 0 && choise < numOfTeams);
-		if (i == 0)
-			teamA = new Team(teams[choise]);//copy c'tor
-		else
-			teamB = new Team(teams[choise]);//copy c'tor
+	int selected = 0;
+	Team* homeTeam = nullptr;
+	Team* awayTeam = nullptr;
+	int homeScore;
+	int awayScore;
+	int day, month, year;
+	int numOfReferees = 0;
 
-		do
-		{
-			cout << "please choose team result - must be positive number: " << endl;
-			cin >> result;
-		} while (result > 0);
-		if (i == 0)
-			resultA = result;
-		else
-			resultB = result;
+	//Set match teams
+	cout << "Select 2 teams from the list below:" << endl;
+	do {
+		for (int i = 0; i < numOfTeams; i++) {
+			cout << i + 1 << ") " << teams[i].getName() << endl;
+		}
+		selected = getIntWithPrompt("Please choose the home team:") - 1;
+		if (selected >= 0 && selected < numOfTeams) {
+			homeTeam = &teams[selected];
+		}
+		cout << endl;
+	} while (homeTeam == nullptr);
+	do {
+		for (int i = 0; i < numOfTeams; i++) {
+			cout << i + 1 << ") " << teams[i].getName() << endl;
+		}
+		selected = getIntWithPrompt("Please choose the away team:") - 1;
+		if (selected >= 0 && selected < numOfTeams) {
+			awayTeam = &teams[selected];
+		}
+		if (awayTeam == homeTeam) {
+			cout << "The away team cannot be the same as the home team. Please choose a different team." << endl;
+			awayTeam = nullptr;
+		}
+		cout << endl;
+	} while (awayTeam == nullptr);
+
+	//Set match score
+	homeScore = getIntWithPrompt("Choose home team score:");
+	awayScore = getIntWithPrompt("Choose away team score:");
+
+	//Set match date
+	cout << "Choose the date of the match:" << endl;
+	day = getIntWithPrompt("Please enter day");
+	month = getIntWithPrompt("Please enter month");
+	year = getIntWithPrompt("Please enter year");
+	Date date(day, month, year);
+
+	// Collect all available referees
+	for (int i = 0; i < numberOfWorkers; i++) {
+		if (Refree* r = dynamic_cast<Refree*>(allWorkers[i])) {
+			numOfReferees++;
+		}
 	}
-	//need to add refree
-	//need to add date
-	return nullptr; /*new Match(*ref, *teamA, *teamB, *date);*/
+	Refree** referees = new Refree * [numOfReferees];
+	int refIndex = 0;
+	for (int i = 0; i < numberOfWorkers; i++) {
+		if (Refree* r = dynamic_cast<Refree*>(allWorkers[i])) {
+			referees[refIndex++] = r;
+		}
+	}
+
+	//Set referee
+	cout << "Select a referee from the list below:" << endl;
+	for (int i = 0; i < numOfReferees; i++) {
+		cout << i + 1 << ") " << referees[i]->getName() << endl;
+	}
+	do {
+		selected = getIntWithPrompt("Please enter the number corresponding to the referee:") - 1;
+	} while (selected < 0 || selected >= numOfReferees);
+	Refree* r = referees[selected];
+
+	//Set court
+	Court c = homeTeam->getCourt();
+
+	//Set match
+	Match* newMatch = new Match(*r, *homeTeam, *awayTeam, homeScore, awayScore, c, date);
+
+	return newMatch;
 }
 
 void printTeams(const Team* teams)

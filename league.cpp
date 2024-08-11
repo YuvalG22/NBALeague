@@ -1,7 +1,7 @@
 #include <iostream>
 #include "league.h"
 
-League::League() : currentNumberOfWorkers(0), currentNumberOfOwners(0) {
+League::League() : currentNumberOfWorkers(0), currentNumberOfOwners(0), currentNumberOfReferees(0), currentNumberOfPlayers(0) {
 
     pAllDistricts[0] = new District("East", 0, 0);
     pAllDistricts[1] = new District("West", 0, 0);
@@ -53,12 +53,24 @@ League::~League() {
     delete[] allOwners;
 }
 
-District* League::getDistricts() const{
-    return *pAllDistricts;
+District** League::getDistricts() {
+    return pAllDistricts;
 }
 
 const int League::getCurrentNumberOfWorkers() const{
     return currentNumberOfWorkers;
+}
+
+const int League::getCurrentNumberOfOwners() const {
+    return currentNumberOfOwners;
+}
+
+const int League::getCurrentNumberOfPlayers() const {
+    return currentNumberOfPlayers;
+}
+
+const int League::getCurrentNumberOfReferees() const {
+    return currentNumberOfReferees;
 }
 
 Person** League::getAllWorkers() const{
@@ -85,9 +97,11 @@ void League::addWorker(const Employee* e) {
     }
     if (const Player* p = dynamic_cast<const Player*>(e)) {
         newWorkers[currentNumberOfWorkers] = new Player(*p);
+        currentNumberOfPlayers++;
     }
     if (const Refree* r = dynamic_cast<const Refree*>(e)) {
         newWorkers[currentNumberOfWorkers] = new Refree(*r);
+        currentNumberOfReferees++;
     }
     delete[] allWorkers;
     allWorkers = newWorkers;

@@ -1,6 +1,8 @@
 #include <iostream>
 #include "district.h" 
 
+District::District() : area(EAST), currentNumberOfTeams(0), currentNumberOfMatches(0) {}
+
 District::District(const char* areaName, const int currentNumMatches, const int currentNumTeams)
     : currentNumberOfTeams(currentNumTeams), currentNumberOfMatches(currentNumMatches) {
     if (strcmp(areaName, "East") == 0)
@@ -9,6 +11,17 @@ District::District(const char* areaName, const int currentNumMatches, const int 
         area = WEST;
     else
         area = EAST;
+}
+
+District::District(const District& other)
+    : area(other.area), currentNumberOfTeams(other.currentNumberOfTeams), currentNumberOfMatches(other.currentNumberOfMatches) {
+    for (int i = 0; i < NUMBER_OF_TEAMS; ++i) {
+        pAllTeams[i] = other.pAllTeams[i];
+    }
+
+    for (int i = 0; i < NUMBER_OF_GAMES_SEASON; ++i) {
+        pAllMatches[i] = other.pAllMatches[i];
+    }
 }
 
 // Overloaded + operator to add a Team
@@ -36,6 +49,14 @@ const District& District::operator+(const Match& toAdd) {
 // Setter for area
 void District::setArea(const eAreaType area) {
     this->area = area;
+}
+
+const int District::getNumOfTeams() const {
+    return currentNumberOfTeams;
+}
+
+const int District::getNumOfMatches() const {
+    return currentNumberOfMatches;
 }
 
 // Overloaded << operator to print District details

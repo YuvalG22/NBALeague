@@ -14,6 +14,8 @@ protected:
 	District* pAllDistricts[NUMBER_OF_DISTRICTS];
 	int currentNumberOfWorkers;
 	int currentNumberOfOwners;
+	int currentNumberOfPlayers;
+	int currentNumberOfReferees;
 	Person** allWorkers;
 	Owner** allOwners;
 
@@ -23,8 +25,11 @@ public:
 	League(League&& other);
 	~League();
 
-	District* getDistricts() const;
+	District** getDistricts();
 	const int getCurrentNumberOfWorkers() const;
+	const int getCurrentNumberOfOwners() const;
+	const int getCurrentNumberOfPlayers() const;
+	const int getCurrentNumberOfReferees() const;
 	Person** getAllWorkers() const;
 	Owner** getAllOwners() const;
 

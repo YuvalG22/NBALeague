@@ -28,7 +28,6 @@ const Employee& Employee::operator+(const float valueToAdd) {
 }
 
 void Employee::toOs(ostream& os) const {
-    os << "Employee Details" << endl;
     os << "Salary: $" << getSalary() << endl;
     os << "\n";
 }
