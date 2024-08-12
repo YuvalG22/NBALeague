@@ -1,7 +1,7 @@
 #include <iostream>
 #include "employee.h"
 
-Employee::Employee(const int pid, const char* name, const Date& dob, const eGenderType gender, const char* address, const float salary)
+Employee::Employee(const int pid, const string& name, const Date& dob, const eGenderType gender, const string& address, const float salary)
     : Person(pid, name, dob, gender, address), salary(salary) {
 }
 

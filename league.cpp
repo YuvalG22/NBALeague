@@ -141,4 +141,5 @@ ostream& operator<<(ostream& os, const League& league) {
     }
 
     return os;
+
 }

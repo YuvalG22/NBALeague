@@ -1,16 +1,16 @@
 #include <iostream>
-#include "district.h" 
+#include "district.h"
 
 District::District() : area(EAST), currentNumberOfTeams(0), currentNumberOfMatches(0) {}
 
-District::District(const char* areaName, const int currentNumMatches, const int currentNumTeams)
+District::District(const std::string& areaName, int currentNumMatches, int currentNumTeams)
     : currentNumberOfTeams(currentNumTeams), currentNumberOfMatches(currentNumMatches) {
-    if (strcmp(areaName, "East") == 0)
+    if (areaName == "East")
         area = EAST;
-    else if (strcmp(areaName, "West") == 0)
+    else if (areaName == "West")
         area = WEST;
     else
-        area = EAST;
+        area = EAST;  // Default to EAST if not recognized
 }
 
 District::District(const District& other)
@@ -58,14 +58,14 @@ const District& District::operator+(const Match& toAdd) {
 }
 
 // Setter for area
-void District::setArea(const eAreaType area) {
+void District::setArea(eAreaType area) {
     this->area = area;
 }
 
-const int District::getNumOfTeams() const {
+int District::getNumOfTeams() const {
     return currentNumberOfTeams;
 }
 
-const int District::getNumOfMatches() const {
+int District::getNumOfMatches() const {
     return currentNumberOfMatches;
 }

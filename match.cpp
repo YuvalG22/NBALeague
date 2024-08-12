@@ -75,4 +75,5 @@ ostream& operator<<(ostream& os, const Match& match) {
     os << "Refree: " << match.getRefree().getName() << endl;
     os << "----------------------------" << endl;
     return os;
+
 }

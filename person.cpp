@@ -1,49 +1,30 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
+#include <string>
 #include "person.h"
 
 Person::Person() : person_id(0), name(nullptr), dateOfBirth(Date()), gender(MALE), address(nullptr) {
     
 }
 
-Person::Person(const int pid, const char* name, const Date dob, const eGenderType gender, const char* address)
-    : person_id(pid), dateOfBirth(dob), gender(gender) {
-    this->name = new char[strlen(name) + 1];
-    strcpy(this->name, name);
-
-    this->address = new char[strlen(address) + 1];
-    strcpy(this->address, address);
-}
+Person::Person(const int pid, const std::string& name, const Date dob, const eGenderType gender, const std::string& address)
+    : person_id(pid), name(name), dateOfBirth(dob), gender(gender), address(address) {}
 
 Person::Person(const Person& other)
-    : person_id(other.person_id), dateOfBirth(other.dateOfBirth), gender(other.gender) {
-    this->name = new char[strlen(other.name) + 1];
-    strcpy(this->name, other.name);
-
-    this->address = new char[strlen(other.address) + 1];
-    strcpy(this->address, other.address);
-}
+    : person_id(other.person_id), name(other.name), dateOfBirth(other.dateOfBirth), gender(other.gender), address(other.address) {}
 
 Person::Person(Person&& other)
-    : person_id(other.person_id), name(other.name), dateOfBirth(other.dateOfBirth),
-    gender(other.gender), address(other.address) {
-    other.name = nullptr;
-    other.address = nullptr;
-}
+    : person_id(other.person_id), name(std::move(other.name)), dateOfBirth(other.dateOfBirth),
+    gender(other.gender), address(std::move(other.address)) {}
 
-Person::~Person() {
-    delete[] name;
-    delete[] address;
-}
+Person::~Person() = default;
 
 void Person::setPID(const int id) {
     person_id = id;
 }
 
-void Person::setName(const char* name) {
-    delete[] this->name;
-    this->name = new char[strlen(name) + 1];
-    strcpy(this->name, name);
+void Person::setName(const std::string& name) {
+    this->name = name;
 }
 
 void Person::setDate(const Date& date) {
@@ -54,26 +35,17 @@ void Person::setGender(const eGenderType gen) {
     gender = gen;
 }
 
-void Person::setAddress(const char* address) {
-    delete[] this->address;
-    this->address = new char[strlen(address) + 1];
-    strcpy(this->address, address);
+void Person::setAddress(const std::string& address) {
+    this->address = address;
 }
 
 Person& Person::operator=(const Person& other) {
     if (this != &other) {
-        delete[] name;
-        delete[] address;
-
         person_id = other.person_id;
+        name = other.name;
         dateOfBirth = other.dateOfBirth;
         gender = other.gender;
-
-        name = new char[strlen(other.name) + 1];
-        strcpy(name, other.name);
-
-        address = new char[strlen(other.address) + 1];
-        strcpy(address, other.address);
+        address = other.address;
     }
     return *this;
 }

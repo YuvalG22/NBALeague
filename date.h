@@ -21,4 +21,5 @@ class Date
 		friend ostream& operator<<(std::ostream& os, const Date& date);
 };
 
+
 #endif // __DATE_H

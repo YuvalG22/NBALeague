@@ -1,6 +1,9 @@
 #pragma warning(disable: 4996)
 #include "league.h"
 #include "LinkedList.h"
+#include <string>
+#include <iostream>
+#include <limits>
 
 /*
 * C++ project- NBA league
@@ -11,14 +14,14 @@ static constexpr int MAX_STR_LEN = 255;
 static constexpr int EXIT = -1;
 // Helpers
 void showLeagueMenu(League& l);
-void showDistrictMenu(League& l, District* d, const char* districtName);
+void showDistrictMenu(League& l, District* d, const string& districtName);
 void showNewWorkerMenu(League& l);
 void printTeams(const Team* teams);
 
 // Creators
 
-void createPerson(int* pid, char* name, Date* date, Person::eGenderType* gender, char* address);
-void createEmployee(int* pid, char* name, Date* date, Person::eGenderType* gender, char* address, float* salary);
+void createPerson(int* pid, string& name, Date* date, Person::eGenderType* gender, string& address);
+void createEmployee(int* pid, string& name, Date* date, Person::eGenderType* gender, string& address, float* salary);
 Owner* createOwner();
 Player* createPlayer();
 Refree* createRefree();
@@ -90,7 +93,7 @@ void showLeagueMenu(League& l)
 	} while (choise != -1);
 }
 
-void showDistrictMenu(League& l, District* d, const char* districtName)
+void showDistrictMenu(League& l, District* d, const string& districtName)
 {
 	int selection;
 	cout << "*** NBA League Creator ***" << endl;
@@ -255,13 +258,13 @@ void showNewWorkerMenu(League& l)
 }
 
 
-void createPerson(int* pid, char* name, Date* date, Person::eGenderType* gender, char* address)
+void createPerson(int* pid, string& name, Date* date, Person::eGenderType* gender, string& address)
 {
 	int day, month, year;
 	*pid = getIdWithPrompt("Please enter person ID:");
 	getchar();
 	cout << "Please enter person name" << endl;
-	cin.getline(name, MAX_STR_LEN);
+	getline(cin, name);
 	cout << "Date of Birth" << endl;
 	day = getIntWithPrompt("Please enter day");
 	month = getIntWithPrompt("Please enter month");
@@ -270,10 +273,10 @@ void createPerson(int* pid, char* name, Date* date, Person::eGenderType* gender,
 	*gender = static_cast<Person::eGenderType>(getEnumSelection("Please choose gender:", Person::genders, Person::eNumOfTypes));
 	getchar();
 	cout << "Please enter person address" << endl;
-	cin.getline(address, MAX_STR_LEN);
+	getline(cin, address);
 }
 
-void createEmployee(int* pid, char* name, Date* date, Person::eGenderType* gender, char* address, float* salary)
+void createEmployee(int* pid, string& name, Date* date, Person::eGenderType* gender, string& address, float* salary)
 {
 	createPerson(pid, name, date, gender, address);
 	*salary = getFloatWithPrompt("Please enter salary:");
@@ -283,7 +286,7 @@ Owner* createOwner()
 {
 	float budget;
 	int pid;
-	char name[MAX_STR_LEN], address[MAX_STR_LEN];
+	string name, address;
 	Person::eGenderType gender;
 	Date* date = new Date();
 
@@ -314,7 +317,7 @@ Player* createPlayer()
 	else						//Player is a new employee
 	{
 		int pid;
-		char name[MAX_STR_LEN], address[MAX_STR_LEN];
+		string name, address;
 		Person::eGenderType gender;
 		Date* date = new Date();
 		createEmployee(&pid, name, date, &gender, address, &salary);
@@ -326,7 +329,7 @@ Refree* createRefree()
 {
 	int pid, numOfMatches;
 	float rank, salary;
-	char name[MAX_STR_LEN], address[MAX_STR_LEN];
+	string name, address;
 	Person::eGenderType gender;
 	Date* date = new Date();
 	createEmployee(&pid, name, date, &gender, address, &salary);

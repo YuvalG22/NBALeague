@@ -9,7 +9,7 @@ using namespace std;
 
 Owner::Owner() : Person(0, "Default Name", Date(), MALE, "Default Address"), budget(0.0f) {}
 
-Owner::Owner(const int pid, const char* name, const Date& dob, const eGenderType gender, const char* address, const float budget)
+Owner::Owner(const int pid, const string& name, const Date& dob, const eGenderType gender, const string& address, const float budget)
     : Person(pid, name, dob, gender, address), budget(budget) {
 }
 

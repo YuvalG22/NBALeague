@@ -1,69 +1,54 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include "court.h"
 #include <iostream>
+#include <string>
+
 using namespace std;
 
-Court::Court() : courtName(nullptr), numberOfSeats(0) {
+// Default Constructor
+Court::Court() : courtName(""), numberOfSeats(0) {}
 
-}
-
-Court::Court(const char* courtName, const int numberOfSeats) {
-    this->courtName = new char[strlen(courtName) + 1];
-    strcpy(this->courtName, courtName);
-    this->numberOfSeats = numberOfSeats;
-}
+// Parameterized Constructor
+Court::Court(const string& courtName, const int numberOfSeats)
+    : courtName(courtName), numberOfSeats(numberOfSeats) {}
 
 // Copy Constructor
-Court::Court(const Court& other) {
-    this->courtName = new char[strlen(other.courtName) + 1];
-    strcpy(this->courtName, other.courtName);
-    this->numberOfSeats = other.numberOfSeats;
-}
+Court::Court(const Court& other)
+    : courtName(other.courtName), numberOfSeats(other.numberOfSeats) {}
 
 // Move Constructor
-Court::Court(Court&& other) {
-    this->courtName = other.courtName;
-    this->numberOfSeats = other.numberOfSeats;
-    other.courtName = nullptr;
-    other.numberOfSeats = 0;
+Court::Court(Court&& other) 
+    : courtName(move(other.courtName)), numberOfSeats(other.numberOfSeats) {
+    other.numberOfSeats = 0; // Reset other object's seats
 }
 
 // Destructor
-Court::~Court() {
-    delete[] courtName;
-}
+Court::~Court() = default; 
 
 // Getter for courtName
-const char* Court::getCourtName() const {
+const string& Court::getCourtName() const {
     return courtName;
 }
 
 // Getter for numberOfSeats
-const int Court::getNumberOfSeats() const {
+int Court::getNumberOfSeats() const {
     return numberOfSeats;
 }
 
 // Setter for courtName
-void Court::setCourtName(const char* name) {
-    delete[] courtName;
-    courtName = new char[strlen(name) + 1];
-    strcpy(courtName, name);
+void Court::setCourtName(const string& name) {
+    courtName = name;
 }
 
+// Assignment Operator
 Court& Court::operator=(const Court& other) {
     if (this != &other) { // Check for self-assignment
-        delete[] courtName; // Delete existing courtName
-
-        // Allocate memory for new courtName and copy the string
-        courtName = new char[strlen(other.courtName) + 1];
-        strcpy(courtName, other.courtName);
-
-        numberOfSeats = other.numberOfSeats; // Copy numberOfSeats
+        courtName = other.courtName;
+        numberOfSeats = other.numberOfSeats;
     }
     return *this;
 }
 
-// Friend function to overload the << operator
+// Overloaded << operator
 ostream& operator<<(ostream& os, const Court& court) {
     os << "Court Name: " << court.courtName << ", Number of Seats: " << court.numberOfSeats;
     return os;

@@ -2,14 +2,14 @@
 #include <iostream>
 #include "team.h"
 
-Team::Team() : teamName(nullptr), pAllPlayers(nullptr), numberOfPlayers(0), numberOfWins(0), numberOfLoses(0) {
+using namespace std;
+
+Team::Team() : teamName(""), pAllPlayers(nullptr), numberOfPlayers(0), numberOfWins(0), numberOfLoses(0) {
 
 }
 
-Team::Team(const char* teamName, const Owner& owner, const Court& court, Player** players, int numberOfPlayers)
-    : rOwner(owner), rCourt(court), numberOfWins(0), numberOfLoses(0), numberOfPlayers(numberOfPlayers) {
-    this->teamName = new char[strlen(teamName) + 1];
-    strcpy(this->teamName, teamName);
+Team::Team(const string& teamName, const Owner& owner, const Court& court, Player** players, int numberOfPlayers)
+    : teamName(teamName), rOwner(owner), rCourt(court), numberOfWins(0), numberOfLoses(0), numberOfPlayers(numberOfPlayers) {
 
     pAllPlayers = new Player * [numberOfPlayers];
     copyPlayers(players, numberOfPlayers);
@@ -17,24 +17,22 @@ Team::Team(const char* teamName, const Owner& owner, const Court& court, Player*
 
 // Copy Constructor
 Team::Team(const Team& other)
-    : rOwner(other.rOwner), rCourt(other.rCourt), numberOfWins(other.numberOfWins), numberOfLoses(other.numberOfLoses), numberOfPlayers(other.numberOfPlayers) {
-    teamName = new char[strlen(other.teamName) + 1];
-    strcpy(teamName, other.teamName);
+    : teamName(other.teamName), rOwner(other.rOwner), rCourt(other.rCourt), numberOfWins(other.numberOfWins), numberOfLoses(other.numberOfLoses), numberOfPlayers(other.numberOfPlayers) {
 
     pAllPlayers = new Player * [numberOfPlayers];
     copyPlayers(other.pAllPlayers, numberOfPlayers);
 }
 
 // Move Constructor
-Team::Team(Team&& other)
-    : teamName(other.teamName), rOwner(move(other.rOwner)), rCourt(move(other.rCourt)), numberOfWins(other.numberOfWins), numberOfLoses(other.numberOfLoses), numberOfPlayers(other.numberOfPlayers), pAllPlayers(other.pAllPlayers) {
-    other.teamName = nullptr;
+Team::Team(Team&& other) noexcept
+    : teamName(move(other.teamName)), rOwner(move(other.rOwner)), rCourt(move(other.rCourt)), numberOfWins(other.numberOfWins), numberOfLoses(other.numberOfLoses), numberOfPlayers(other.numberOfPlayers), pAllPlayers(other.pAllPlayers) {
+
     other.pAllPlayers = nullptr;
+    other.numberOfPlayers = 0;
 }
 
 // Destructor
 Team::~Team() {
-    delete[] teamName;
     for (int i = 0; i < numberOfPlayers; ++i) {
         delete pAllPlayers[i];
     }
@@ -42,21 +40,19 @@ Team::~Team() {
 }
 
 // Setters
-void Team::setName(const char* name) {
-    delete[] teamName;
-    teamName = new char[strlen(name) + 1];
-    strcpy(teamName, name);
+void Team::setName(const string& name) {
+    teamName = name;
 }
 
-void Team::setNumberOfWins(const int wins) {
+void Team::setNumberOfWins(int wins) {
     numberOfWins = wins;
 }
 
-void Team::setNumberOfLoses(const int loses) {
+void Team::setNumberOfLoses(int loses) {
     numberOfLoses = loses;
 }
 
-void Team::setNumberOfPlayers(const int newNumOfPlayers) {
+void Team::setNumberOfPlayers(int newNumOfPlayers) {
     if (newNumOfPlayers < numberOfPlayers) {
         for (int i = newNumOfPlayers; i < numberOfPlayers; ++i) {
             delete pAllPlayers[i];
@@ -76,23 +72,23 @@ void Team::setOwner(const Owner& other) {
 }
 
 // Getters
-const char* Team::getName() const {
+const string& Team::getName() const {
     return teamName;
 }
 
-const int Team::getNumberOfWins() const {
+int Team::getNumberOfWins() const {
     return numberOfWins;
 }
 
-const int Team::getNumberOfLoses() const {
+int Team::getNumberOfLoses() const {
     return numberOfLoses;
 }
 
-const int Team::getNumberOfPlayers() const {
+int Team::getNumberOfPlayers() const {
     return numberOfPlayers;
 }
 
-const Court Team::getCourt() const{
+const Court& Team::getCourt() const {
     return rCourt;
 }
 
@@ -119,22 +115,18 @@ const Team& Team::operator+(const Player& other) {
 
 Team& Team::operator=(const Team& other) {
     if (this != &other) {
-        delete[] teamName;
+        teamName = other.teamName;
         for (int i = 0; i < numberOfPlayers; ++i) {
             delete pAllPlayers[i];
         }
         delete[] pAllPlayers;
+        rOwner = other.rOwner;
+        rCourt = other.rCourt;
         numberOfWins = other.numberOfWins;
         numberOfLoses = other.numberOfLoses;
         numberOfPlayers = other.numberOfPlayers;
-        teamName = new char[strlen(other.teamName) + 1];
-        strcpy(teamName, other.teamName);
-        rOwner = other.rOwner;
-        rCourt = other.rCourt;
-        pAllPlayers = new Player*[numberOfPlayers];
-        for (int i = 0; i < numberOfPlayers; ++i) {
-            pAllPlayers[i] = new Player(*other.pAllPlayers[i]);
-        }
+        pAllPlayers = new Player * [numberOfPlayers];
+        copyPlayers(other.pAllPlayers, numberOfPlayers);
     }
     return *this;
 }
@@ -155,6 +147,6 @@ ostream& operator<<(ostream& os, const Team& team) {
 
 void Team::copyPlayers(Player** players, int numberOfPlayers) {
     for (int i = 0; i < numberOfPlayers; ++i) {
-        pAllPlayers[i] = players[i];
+        pAllPlayers[i] = new Player(*players[i]);
     }
 }

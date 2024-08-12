@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "person.h"
+#include <string>
 using namespace std;
 
 class Owner : virtual public Person
@@ -12,7 +13,7 @@ protected:
 
 public:
 	Owner();
-	Owner(const int pid, const char* name, const Date& dob, const eGenderType gender, const char* address, const float budget);
+	Owner(const int pid, const string& name, const Date& dob, const eGenderType gender, const string& address, const float budget);
 	
 	void setBudget(const float budget);
 

@@ -7,19 +7,19 @@ using namespace std;
 class Court
 {
 protected:
-	char* courtName;
+	string courtName;
 	int numberOfSeats;
 
 public:
 	Court();
-	Court(const char* courtName, const int numberOfSeats);
+	Court(const string& courtName, const int numberOfSeats);
 	Court(const Court& other);
 	Court(Court&& other);
 	~Court();
 
-	const char* getCourtName() const;
-	const int getNumberOfSeats() const;
-	void setCourtName(const char* name);
+	const string& getCourtName() const;
+	int getNumberOfSeats() const;
+	void setCourtName(const string& name);
 	Court& operator=(const Court& other);
 	friend ostream& operator<<(ostream& os, const Court& court);
 

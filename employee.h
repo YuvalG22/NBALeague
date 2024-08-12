@@ -11,7 +11,7 @@ protected:
 	float salary;
 
 public:
-	Employee(const int pid, const char* name, const Date& dob, const eGenderType gender, const char* address, const float salary);
+	Employee(const int pid, const string& name, const Date& dob, const eGenderType gender, const string& address, const float salary);
 
 	virtual void toOs(ostream& os) const override;
 
