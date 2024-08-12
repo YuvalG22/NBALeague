@@ -20,11 +20,11 @@ const Refree& Match::getRefree() const {
     return *refree;
 }
 
-const Team& Match::getTeamA() const {
+Team& Match::getTeamA() const {
     return *teamA;
 }
 
-const Team& Match::getTeamB() const {
+Team& Match::getTeamB() const {
     return *teamB;
 }
 

@@ -37,6 +37,8 @@ public:
 	const int getNumberOfPlayers() const;
 	const Court getCourt() const;
 
+	void incrementWins();
+	void incrementLosses();
 	const Team& operator+(const Player& other); //Add Player
 	Team& operator=(const Team& other);
 	friend ostream& operator<<(ostream& os, const Team& team);

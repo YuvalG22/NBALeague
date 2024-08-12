@@ -39,6 +39,14 @@ const District& District::operator+(const Team& toAdd) {
 const District& District::operator+(const Match& toAdd) {
     if (currentNumberOfMatches < NUMBER_OF_GAMES_SEASON) {
         pAllMatches[currentNumberOfMatches++] = toAdd;
+        if (toAdd.getResultA() > toAdd.getResultB()) {
+            toAdd.getTeamA().incrementWins();
+            toAdd.getTeamB().incrementLosses();
+        }
+        else {
+            toAdd.getTeamA().incrementLosses();
+            toAdd.getTeamB().incrementWins();
+        }
     }
     else {
         cout << "Cannot add more matches. Maximum number of matches reached." << endl;
