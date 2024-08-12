@@ -28,6 +28,7 @@ Match* createMatch(Team* teams, int numOfTeams, Person** allWorkers, const int n
 
 // General Read Functions
 int getIntWithPrompt(const char* message);
+int getIdWithPrompt(const char* message);
 float getFloatWithPrompt(const char* message);
 int getEnumSelection(const char* message, const char* const types[], const int numOfTypes);
 char* getStrExactName(const char* msg);
@@ -101,8 +102,7 @@ void showDistrictMenu(League& l, District* d, const char* districtName)
 		cout << "4) Print Teams" << endl;
 		cout << "5) Print Workers" << endl;
 		cout << "6) Print Matches" << endl;
-		cout << "7) Go back to choose district" << endl;
-		cout << "-1) Exit" << endl;
+		cout << "-1) Back" << endl;
 		cin >> selection;
 		cout << "-----------------------------" << endl;
 
@@ -254,7 +254,7 @@ void showNewWorkerMenu(League& l)
 void createPerson(int* pid, char* name, Date* date, Person::eGenderType* gender, char* address)
 {
 	int day, month, year;
-	*pid = getIntWithPrompt("Please enter person ID:");
+	*pid = getIdWithPrompt("Please enter person ID:");
 	cout << "Please enter person name" << endl;
 	cin.getline(name, MAX_STR_LEN);
 	cout << "Date of Birth" << endl;
@@ -505,18 +505,80 @@ void printTeams(const Team* teams)
 int getIntWithPrompt(const char* message)
 {
 	int num;
-	cout << message << endl;
-	cin >> num;
-	getchar();
-	return num;
+	while (true) {
+		cout << message << endl;
+		cin >> num;
+
+		// Check if the input is an integer
+		if (cin.fail()) {
+			// If not, clear the error flag
+			cin.clear();
+			// Ignore the rest of the input until a newline
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cout << "Invalid input. Please enter an integer." << endl;
+		}
+		else {
+			// Valid input, consume the newline character and return the number
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			return num;
+		}
+	}
+}
+
+int getIdWithPrompt(const char* message)
+{
+	char input[10];  // One extra space for the null-terminator
+	bool valid = false;
+
+	while (!valid) {
+		cout << message << endl;
+		cin.clear();
+		cin >> input;
+
+		// Check if the input has exactly 9 digits and consists only of digits
+		int length = 0;
+		valid = true;
+		for (int i = 0; input[i] != '\0'; ++i) {
+			if (!isdigit(input[i])) {
+				valid = false;
+				break;
+			}
+			length++;
+		}
+
+		if (length != 9) {
+			valid = false;
+		}
+
+		if (!valid) {
+			cout << "Invalid input. Please enter a 9-digit number." << endl;
+		}
+	}
+
+	return atoi(input);  // Convert the valid 9-digit string to an integer
 }
 
 float getFloatWithPrompt(const char* message)
 {
 	float num;
-	cout << message << endl;
-	cin >> num;
-	return num;
+	while (true) {
+		cout << message << endl;
+		cin >> num;
+
+		// Check if the input is an float
+		if (cin.fail()) {
+			// If not, clear the error flag
+			cin.clear();
+			// Ignore the rest of the input until a newline
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cout << "Invalid input. Please enter a float." << endl;
+		}
+		else {
+			// Valid input, consume the newline character and return the number
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			return num;
+		}
+	}
 }
 
 /*int getEnumSelection(const char* message, const char* const types[], const int numOfTypes)
