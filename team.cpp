@@ -96,7 +96,13 @@ const Court Team::getCourt() const{
     return rCourt;
 }
 
+void Team::incrementWins() {
+    numberOfWins++;
+}
 
+void Team::incrementLosses() {
+    numberOfLoses++;
+}
 
 // Overloaded + operator to add a Player
 const Team& Team::operator+(const Player& other) {

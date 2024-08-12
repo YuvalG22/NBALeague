@@ -25,8 +25,8 @@ public:
 	~Match();
 
 	const Refree& getRefree() const;
-	const Team& getTeamA() const;
-	const Team& getTeamB() const;
+	Team& getTeamA() const;
+	Team& getTeamB() const;
 	const Court& getCourt() const;
 	int getResultA() const;
 	int getResultB() const;
