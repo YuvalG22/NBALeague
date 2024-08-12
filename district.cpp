@@ -19,8 +19,10 @@ District::District(const District& other)
         pAllTeams[i] = other.pAllTeams[i];
     }
 
-    for (int i = 0; i < NUMBER_OF_GAMES_SEASON; ++i) {
-        pAllMatches[i] = other.pAllMatches[i];
+    Node<Match>* current = other.pAllMatches.getHead();
+    while (current) {
+        pAllMatches.append(current->data);
+        current = current->next;
     }
 }
 
@@ -38,7 +40,8 @@ const District& District::operator+(const Team& toAdd) {
 // Overloaded + operator to add a Match
 const District& District::operator+(const Match& toAdd) {
     if (currentNumberOfMatches < NUMBER_OF_GAMES_SEASON) {
-        pAllMatches[currentNumberOfMatches++] = toAdd;
+        pAllMatches.append(toAdd);
+        currentNumberOfMatches++;
         if (toAdd.getResultA() > toAdd.getResultB()) {
             toAdd.getTeamA().incrementWins();
             toAdd.getTeamB().incrementLosses();
@@ -65,18 +68,4 @@ const int District::getNumOfTeams() const {
 
 const int District::getNumOfMatches() const {
     return currentNumberOfMatches;
-}
-
-// Overloaded << operator to print District details
-ostream& operator<<(ostream& os, const District& district) {
-    os << "District Area: " << district.areas[district.area] << endl;
-    os << "Teams (" << district.currentNumberOfTeams << "):" << endl;
-    for (int i = 0; i < district.currentNumberOfTeams; ++i) {
-        os << district.pAllTeams[i] << endl;
-    }
-    os << "Matches (" << district.currentNumberOfMatches << "):" << endl;
-    for (int i = 0; i < district.currentNumberOfMatches; ++i) {
-        os << district.pAllMatches[i] << endl;
-    }
-    return os;
 }

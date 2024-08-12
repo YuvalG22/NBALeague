@@ -2,6 +2,7 @@
 #define __DISTRICT_H
 
 #include <iostream>
+#include "LinkedList.h"
 #include "team.h"
 #include "match.h"
 using namespace std;
@@ -21,17 +22,15 @@ public:
 
 	const eAreaType getArea() const { return area; }
 	Team* getTeams() { return pAllTeams; }
-	Match* getMatches() { return pAllMatches; }
+	LinkedList<Match>* getMatches() { return &pAllMatches; }
 	void setArea(const eAreaType area);
 	const int getNumOfTeams() const;
 	const int getNumOfMatches() const;
 
-	friend ostream& operator<<(ostream& os, const District& district);
-
 protected:
 	eAreaType area;
 	Team pAllTeams[NUMBER_OF_TEAMS];
-	Match pAllMatches[NUMBER_OF_GAMES_SEASON];
+	LinkedList<Match> pAllMatches;
 	int currentNumberOfTeams;
 	int currentNumberOfMatches;
 };

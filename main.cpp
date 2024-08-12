@@ -1,5 +1,6 @@
 #pragma warning(disable: 4996)
 #include "league.h"
+#include "LinkedList.h"
 
 /*
 * C++ project- NBA league
@@ -179,9 +180,12 @@ void showDistrictMenu(League& l, District* d, const char* districtName)
 
 		case PRINT_MATCH:
 		{
-			const Match* matches = (*d).getMatches();
-			for (int i = 0; i < (*d).getNumOfMatches(); i++)
-				cout << matches[i] << endl;
+			LinkedList<Match>* matches = (*d).getMatches();
+			Node<Match>* current = matches->getHead();
+			while (current != nullptr) {
+				cout << current->data << endl;
+				current = current->next;
+			}
 			break;
 		}
 
@@ -255,6 +259,7 @@ void createPerson(int* pid, char* name, Date* date, Person::eGenderType* gender,
 {
 	int day, month, year;
 	*pid = getIdWithPrompt("Please enter person ID:");
+	getchar();
 	cout << "Please enter person name" << endl;
 	cin.getline(name, MAX_STR_LEN);
 	cout << "Date of Birth" << endl;
@@ -491,15 +496,6 @@ Match* createMatch(Team* teams, int numOfTeams, Person** allWorkers, const int n
 
 	return newMatch;
 }
-
-void printTeams(const Team* teams)
-{
-	cout <<  "All teams : " << endl;
-	for (int i = 0; i < District::NUMBER_OF_TEAMS; i++)
-		cout << i+1 << ". " << teams[i] << endl;
-}
-
-
 
 //General Functions
 int getIntWithPrompt(const char* message)

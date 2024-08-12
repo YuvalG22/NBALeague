@@ -128,12 +128,6 @@ ostream& operator<<(ostream& os, const League& league) {
     os << "Districts:\n";
     for (int i = 0; i < League::NUMBER_OF_DISTRICTS; ++i) {
         os << "District " << i + 1 << ":\n";
-        if (league.pAllDistricts[i]) {
-            os << *(league.pAllDistricts[i]) << endl;
-        }
-        else {
-            os << "No district information available.\n";
-        }
     }
 
     os << "Workers:\n";

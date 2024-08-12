@@ -24,6 +24,7 @@
     <ClInclude Include="district.h" />
     <ClInclude Include="employee.h" />
     <ClInclude Include="league.h" />
+    <ClInclude Include="LinkedList.h" />
     <ClInclude Include="match.h" />
     <ClInclude Include="owner.h" />
     <ClInclude Include="person.h" />
