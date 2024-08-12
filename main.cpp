@@ -35,7 +35,7 @@ int getIntWithPrompt(const char* message);
 int getIdWithPrompt(const char* message);
 float getFloatWithPrompt(const char* message);
 int getEnumSelection(const char* message, const char* const types[], const int numOfTypes);
-char* getStrExactName(const char* msg);
+string getStrExactName(const char* msg);
 char* getDynStr(char* str);
 char* myGets(char* buffer, int size, FILE* source);
 
@@ -347,10 +347,10 @@ Team* createTeam(Person** allWorkers, const int numberOfWorkers, Owner** allOwne
 	int numOfTeamPlayers = 0;
 	int selected = 0;
 	int numOfSeats = 0;
-	char teamName[MAX_STR_LEN];
+	string teamName;
 	cout << "Please enter team's name: ";
 	cin.ignore();
-	cin.getline(teamName, MAX_STR_LEN);
+	getline(cin, teamName);
 
 	// List all available owners
 	cout << "Select an owner from the list below:" << endl;
@@ -363,9 +363,9 @@ Team* createTeam(Person** allWorkers, const int numberOfWorkers, Owner** allOwne
 	Owner o = *allOwners[selected];
 
 	// Set court
-	char courtName[MAX_STR_LEN];
+	string courtName;
 	cout << "Please enter court's name: ";
-	cin.getline(courtName, MAX_STR_LEN);
+	getline(cin, courtName);
 	numOfSeats = getIntWithPrompt("Please enter court's number of seats:");
 	cout << endl;
 
@@ -580,7 +580,7 @@ float getFloatWithPrompt(const char* message)
 	}
 }
 
-/*int getEnumSelection(const char* message, const char* const types[], const int numOfTypes)
+int getEnumSelection(const char* message, const char* const types[], const int numOfTypes)
 {
 	int enumChoice;
 	do
@@ -594,28 +594,16 @@ float getFloatWithPrompt(const char* message)
 	} while (enumChoice < 1 || enumChoice > numOfTypes);
 
 	return enumChoice - 1;  // Adjust to zero-based index
-}*/
+}
 
-char* getStrExactName(const char* msg)
+string getStrExactName(const char* msg)
 {
-	char* str;
-	char temp[MAX_STR_LEN];
-	printf("%s\t", msg);
-	myGets(temp, MAX_STR_LEN, stdin);
-	str = getDynStr(temp);
+	string str;
+	cout << msg << "\t";
+	getline(cin, str);
 	return str;
 }
 
-char* getDynStr(char* str)
-{
-	char* theStr;
-	theStr = new char((strlen(str) + 1));
-	if (!theStr)
-		return NULL;
-
-	strcpy(theStr, str);
-	return theStr;
-}
 
 char* myGets(char* buffer, int size, FILE* source)
 {

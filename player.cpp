@@ -7,6 +7,8 @@
 
 using namespace std;
 
+const char* const Player::positionNames[Player::eNumOfTypes] = { "Point Guard", "Shooting Guard", "Small Forward", "Power Forward", "Center" };
+
 Player::Player(const Employee& e, int playerNumber, ePositionType position, int numberOfTitles, int numberOfMatches, bool isOwner)
     : Person(e), Employee(e), playerNumber(playerNumber), position(position), numberOfTitles(numberOfTitles), numberOfMatches(numberOfMatches), isOwner(isOwner)
 {}
@@ -70,18 +72,3 @@ ostream& operator<<(ostream& os, const Player& player) {
     return os;
 }
 
-int getEnumSelection(const char* message, const char* const types[], const int numOfTypes)
-{
-    int enumChoice;
-    do
-    {
-        cout << message << endl;
-        for (int i = 0; i < numOfTypes; ++i)
-        {
-            cout << i + 1 << ") " << types[i] << endl;
-        }
-        cin >> enumChoice;
-    } while (enumChoice < 1 || enumChoice > numOfTypes);
-
-    return enumChoice - 1;  // Adjust to zero-based index
-}

@@ -3,7 +3,8 @@
 #include <string>
 #include "person.h"
 
-Person::Person() : person_id(0), name(nullptr), dateOfBirth(Date()), gender(MALE), address(nullptr) {
+
+Person::Person() : person_id(0), name("nullptr"), dateOfBirth(Date()), gender(MALE), address(nullptr) {
     
 }
 

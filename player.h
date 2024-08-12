@@ -12,7 +12,8 @@ class Player : public Employee, public Owner
 {
 public:
     enum ePositionType { POINT_GUARD, SHOOTING_GUARD, SMALL_FORWARD, POWER_FORWARD, CENTER, eNumOfTypes };
-    static constexpr const char* positionNames[eNumOfTypes] = { "Point Guard", "Shooting Guard", "Small Forward", "Power Forward", "Center" };
+    static const char* const positionNames[eNumOfTypes];
+
 
     Player(const Employee& e, int playerNumber, ePositionType position, int numberOfTitles, int numberOfMatches, bool isOwner);
     Player(const Employee& e, const Owner& o, int playerNumber, ePositionType position, int numberOfTitles, int numberOfMatches, bool isOwner);
