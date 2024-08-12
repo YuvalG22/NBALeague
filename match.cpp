@@ -1,13 +1,11 @@
-#include <iostream>
 #include "match.h"
 
-Match::Match() : refree(nullptr), teamA(nullptr), teamB(nullptr), resultA(0), resultB(0), court(nullptr) {}
+Match::Match()
+    : refree(nullptr), teamA(nullptr), teamB(nullptr), resultA(0), resultB(0), court(nullptr), gameDate(Date()) {}
 
-Match::Match(const Refree& ref, const Team& teamA, const Team& teamB, const int resA, const int resB, const Court& court, const Date gameDate)
-    : refree(new Refree(ref)), teamA(new Team(teamA)), teamB(new Team(teamB)), court(new Court(court)), resultA(resA), resultB(resB), gameDate(gameDate) {
-}
+Match::Match(const Refree& ref, const Team& teamA, const Team& teamB, int resA, int resB, const Court& court, const Date gameDate)
+    : refree(new Refree(ref)), teamA(new Team(teamA)), teamB(new Team(teamB)), resultA(resA), resultB(resB), court(new Court(court)), gameDate(gameDate) {}
 
-// Match destructor
 Match::~Match() {
     delete refree;
     delete teamA;
@@ -15,7 +13,6 @@ Match::~Match() {
     delete court;
 }
 
-// Getter methods
 const Refree& Match::getRefree() const {
     return *refree;
 }
@@ -44,7 +41,6 @@ const Date& Match::getDate() const {
     return gameDate;
 }
 
-// Setter methods
 void Match::setRefree(const Refree& ref) {
     *refree = ref;
 }
@@ -57,23 +53,21 @@ void Match::setTeamB(const Team& team) {
     *teamB = team;
 }
 
-void Match::setCourt(const Court& court) {
-    *this->court = court;
-}
-
 void Match::setDate(const Date& date) {
     gameDate = date;
 }
 
-// Overloaded << operator to print Match details
-ostream& operator<<(ostream& os, const Match& match) {
-    os << "Team A: " << match.getTeamA().getName() << " (" << match.getTeamA().getNumberOfWins() << " - " << match.getTeamA().getNumberOfLoses() << ") " << endl;
-    os << "Team B: " << match.getTeamB().getName() << " (" << match.getTeamB().getNumberOfWins() << " - " << match.getTeamB().getNumberOfLoses() << ") " << endl;
-    os << "Result: " << match.getTeamA().getName() << " " << match.getResultA() << " - " << match.getResultB() << " " << match.getTeamB().getName() << endl;
-    os << "Date: " << match.getDate() << endl;
-    os << "Court: " << match.getCourt() << endl;
-    os << "Refree: " << match.getRefree().getName() << endl;
-    os << "----------------------------" << endl;
-    return os;
+void Match::setCourt(const Court& court) {
+    this->court = new Court(court);
+}
 
+ostream& operator<<(ostream& os, const Match& match) {
+    os << "Match Details:" << endl;
+    os << "Refree: " << match.getRefree().getName() << endl;
+    os << "Team A: " << match.getTeamA().getName() << endl;
+    os << "Team B: " << match.getTeamB().getName() << endl;
+    os << "Result: " << match.getResultA() << " - " << match.getResultB() << endl;
+    os << "Court: " << match.getCourt().getCourtName() << endl;
+    os << "Date: " << match.getDate() << endl;
+    return os;
 }

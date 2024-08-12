@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <list>
 #include "LinkedList.h"
 #include "team.h"
 #include "match.h"
@@ -15,7 +16,7 @@ public:
     static constexpr int NUMBER_OF_TEAMS = 12;
     static constexpr int NUMBER_OF_GAMES_SEASON = 72;
     enum eAreaType { EAST, WEST, eNumOfTypes };
-    const std::string areas[eNumOfTypes] = { "East", "West" };
+    static const std::string areas[eNumOfTypes];  // Changed to static
 
     District();
     District(const std::string& area, int currentNumberOfMatches, int currentNumberOfTeams);
@@ -24,7 +25,7 @@ public:
     const District& operator+(const Match& toAdd);
 
     eAreaType getArea() const { return area; }
-    Team* getTeams() { return pAllTeams; }
+    list<Team>& getTeams() { return pAllTeams; }
     LinkedList<Match>* getMatches() { return &pAllMatches; }
     void setArea(eAreaType area);
     int getNumOfTeams() const;
@@ -32,7 +33,7 @@ public:
 
 protected:
     eAreaType area;
-    Team pAllTeams[NUMBER_OF_TEAMS];
+    list<Team> pAllTeams;
     LinkedList<Match> pAllMatches;
     int currentNumberOfTeams;
     int currentNumberOfMatches;

@@ -3,43 +3,40 @@
 
 #include "district.h"
 #include <iostream>
+#include <list>  // Added list
 using namespace std;
-
-
 
 class League
 {
 protected:
-	static constexpr int NUMBER_OF_DISTRICTS = 2;
-	District* pAllDistricts[NUMBER_OF_DISTRICTS];
-	int currentNumberOfWorkers;
-	int currentNumberOfOwners;
-	int currentNumberOfPlayers;
-	int currentNumberOfReferees;
-	Person** allWorkers;
-	Owner** allOwners;
+    static constexpr int NUMBER_OF_DISTRICTS = 2;
+    list<District> pAllDistricts;  // Changed to std::list<District>
+    int currentNumberOfWorkers;
+    int currentNumberOfOwners;
+    int currentNumberOfPlayers;
+    int currentNumberOfReferees;
+    list<Person*> allWorkers;  // Changed to std::list<Person*>
+    list<Owner*> allOwners;  // Changed to std::list<Owner*>
 
 public:
-	League();
-	League(const League& other);
-	League(League&& other);
-	~League();
+    League();
+    League(const League& other);
+    League(League&& other);
+    ~League();
 
-	District** getDistricts();
-	const int getCurrentNumberOfWorkers() const;
-	const int getCurrentNumberOfOwners() const;
-	const int getCurrentNumberOfPlayers() const;
-	const int getCurrentNumberOfReferees() const;
-	Person** getAllWorkers() const;
-	Owner** getAllOwners() const;
+    list<District>& getDistricts();
+    int getCurrentNumberOfWorkers() const;
+    int getCurrentNumberOfOwners() const;
+    int getCurrentNumberOfPlayers() const;
+    int getCurrentNumberOfReferees() const;
+    list<Person*>& getAllWorkers();  // Changed to std::list<Person*>&
+    list<Owner*>& getAllOwners();  // Changed to std::list<Owner*>&
 
-	void setDistrict(const District& d);
-	void setCurrentNumberOfWorkers(const int newNum);
-	void addWorker(const Employee* e);
-	void addOwner(const Owner* o);
-	friend ostream& operator<<(ostream& os, const League& league);
-
+    void setDistrict(const District& d);
+    void setCurrentNumberOfWorkers(const int newNum);
+    void addWorker(const Employee* e);
+    void addOwner(const Owner* o);
+    friend ostream& operator<<(ostream& os, const League& league);
 };
 
-
-#endif // LEAGUE
+#endif // LEAGUE_H

@@ -1,6 +1,8 @@
 #include <iostream>
 #include "district.h"
 
+const std::string District::areas[District::eNumOfTypes] = { "East", "West" };
+
 District::District() : area(EAST), currentNumberOfTeams(0), currentNumberOfMatches(0) {}
 
 District::District(const std::string& areaName, int currentNumMatches, int currentNumTeams)
@@ -14,10 +16,7 @@ District::District(const std::string& areaName, int currentNumMatches, int curre
 }
 
 District::District(const District& other)
-    : area(other.area), currentNumberOfTeams(other.currentNumberOfTeams), currentNumberOfMatches(other.currentNumberOfMatches) {
-    for (int i = 0; i < NUMBER_OF_TEAMS; ++i) {
-        pAllTeams[i] = other.pAllTeams[i];
-    }
+    : area(other.area), currentNumberOfTeams(other.currentNumberOfTeams), currentNumberOfMatches(other.currentNumberOfMatches), pAllTeams(other.pAllTeams) {
 
     Node<Match>* current = other.pAllMatches.getHead();
     while (current) {
@@ -29,7 +28,8 @@ District::District(const District& other)
 // Overloaded + operator to add a Team
 const District& District::operator+(const Team& toAdd) {
     if (currentNumberOfTeams < NUMBER_OF_TEAMS) {
-        pAllTeams[currentNumberOfTeams++] = toAdd;
+        pAllTeams.push_back(toAdd);
+        currentNumberOfTeams++;
     }
     else {
         cout << "Cannot add more teams. Maximum number of teams reached." << endl;
