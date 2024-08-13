@@ -3,15 +3,8 @@
 Match::Match()
     : refree(nullptr), teamA(nullptr), teamB(nullptr), resultA(0), resultB(0), court(nullptr), gameDate(Date()) {}
 
-Match::Match(const Refree& ref, const Team& teamA, const Team& teamB, int resA, int resB, const Court& court, const Date gameDate)
-    : refree(new Refree(ref)), teamA(new Team(teamA)), teamB(new Team(teamB)), resultA(resA), resultB(resB), court(new Court(court)), gameDate(gameDate) {}
-
-Match::~Match() {
-    delete refree;
-    delete teamA;
-    delete teamB;
-    delete court;
-}
+Match::Match(const Refree& ref, Team& teamA, Team& teamB, int resA, int resB, const Court& court, const Date gameDate)
+    : refree(new Refree(ref)), teamA(&teamA), teamB(&teamB), resultA(resA), resultB(resB), court(new Court(court)), gameDate(gameDate) {}
 
 const Refree& Match::getRefree() const {
     return *refree;
@@ -62,12 +55,11 @@ void Match::setCourt(const Court& court) {
 }
 
 ostream& operator<<(ostream& os, const Match& match) {
-    os << "Match Details:" << endl;
+    os << "Team A: " << match.getTeamA().getName() << " (" << match.getTeamA().getNumberOfWins() << " - " << match.getTeamA().getNumberOfLoses() << ") " << endl;
+    os << "Team B: " << match.getTeamB().getName() << " (" << match.getTeamB().getNumberOfWins() << " - " << match.getTeamB().getNumberOfLoses() << ") " << endl;
+    os << "Result: " << match.getTeamA().getName() << " " << match.getResultA() << " - " << match.getResultB() << " " << match.getTeamB().getName() << endl;
+    os << "Court: " << match.getCourt() << endl;
     os << "Refree: " << match.getRefree().getName() << endl;
-    os << "Team A: " << match.getTeamA().getName() << endl;
-    os << "Team B: " << match.getTeamB().getName() << endl;
-    os << "Result: " << match.getResultA() << " - " << match.getResultB() << endl;
-    os << "Court: " << match.getCourt().getCourtName() << endl;
-    os << "Date: " << match.getDate() << endl;
+    os << "----------------------------" << endl;
     return os;
 }

@@ -12,17 +12,7 @@ District::District(const std::string& areaName, int currentNumMatches, int curre
     else if (areaName == "West")
         area = WEST;
     else
-        area = EAST;  // Default to EAST if not recognized
-}
-
-District::District(const District& other)
-    : area(other.area), currentNumberOfTeams(other.currentNumberOfTeams), currentNumberOfMatches(other.currentNumberOfMatches), pAllTeams(other.pAllTeams) {
-
-    Node<Match>* current = other.pAllMatches.getHead();
-    while (current) {
-        pAllMatches.append(current->data);
-        current = current->next;
-    }
+        area = EAST;
 }
 
 // Overloaded + operator to add a Team
@@ -39,9 +29,13 @@ const District& District::operator+(const Team& toAdd) {
 
 // Overloaded + operator to add a Match
 const District& District::operator+(const Match& toAdd) {
+    std::cout << "Adding Match: Home Team Address in Match: " << &toAdd.getTeamA() << ", Away Team Address in Match: " << &toAdd.getTeamB() << std::endl;
     if (currentNumberOfMatches < NUMBER_OF_GAMES_SEASON) {
         pAllMatches.append(toAdd);
         currentNumberOfMatches++;
+        std::cout << "Address comparison: Team A in District: " << &toAdd.getTeamA() << " vs Team A in Match: " << &toAdd.getTeamA() << std::endl;
+        std::cout << "Address comparison: Team B in District: " << &toAdd.getTeamB() << " vs Team B in Match: " << &toAdd.getTeamB() << std::endl;
+
         if (toAdd.getResultA() > toAdd.getResultB()) {
             toAdd.getTeamA().incrementWins();
             toAdd.getTeamB().incrementLosses();

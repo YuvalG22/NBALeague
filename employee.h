@@ -17,7 +17,6 @@ public:
 
 	const float getSalary() const;
 	void setSalary(const float salary);
-	Employee& operator=(const Employee& other);
 	const Employee& operator+(const float valueToAdd);
 	friend ostream& operator<<(ostream& os, const Employee& e);
 

@@ -13,15 +13,6 @@ void Employee::setSalary(const float salary) {
     this->salary = salary;
 }
 
-Employee& Employee::operator=(const Employee& other) {
-    if (this != &other) {
-        Person::operator=(other);
-
-        salary = other.salary;
-    }
-    return *this;
-}
-
 const Employee& Employee::operator+(const float valueToAdd) {
     salary += valueToAdd;
     return *this;

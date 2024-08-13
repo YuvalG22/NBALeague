@@ -8,38 +8,6 @@ League::League()
     pAllDistricts.push_back(District("West", 0, 0));  // Add WEST district
 }
 
-League::League(const League& other)
-    : pAllDistricts(other.pAllDistricts),
-    currentNumberOfWorkers(other.currentNumberOfWorkers),
-    currentNumberOfOwners(other.currentNumberOfOwners),
-    currentNumberOfPlayers(other.currentNumberOfPlayers),
-    currentNumberOfReferees(other.currentNumberOfReferees),
-    allWorkers(other.allWorkers),
-    allOwners(other.allOwners) {}
-
-League::League(League&& other)
-    : pAllDistricts(move(other.pAllDistricts)),
-    currentNumberOfWorkers(other.currentNumberOfWorkers),
-    currentNumberOfOwners(other.currentNumberOfOwners),
-    currentNumberOfPlayers(other.currentNumberOfPlayers),
-    currentNumberOfReferees(other.currentNumberOfReferees),
-    allWorkers(move(other.allWorkers)),
-    allOwners(move(other.allOwners)) {
-    other.currentNumberOfWorkers = 0;
-    other.currentNumberOfOwners = 0;
-    other.currentNumberOfPlayers = 0;
-    other.currentNumberOfReferees = 0;
-}
-
-League::~League() {
-    for (Person* worker : allWorkers) {
-        delete worker;
-    }
-    for (Owner* owner : allOwners) {
-        delete owner;
-    }
-}
-
 list<District>& League::getDistricts() {
     return pAllDistricts;
 }
@@ -77,12 +45,18 @@ void League::setCurrentNumberOfWorkers(const int newNum) {
 }
 
 void League::addWorker(const Employee* e) {
-    allWorkers.push_back(const_cast<Employee*>(e));  // Add to the workers list
-    currentNumberOfWorkers++;
+    if (const Player* p = dynamic_cast<const Player*>(e)) {
+        allWorkers.push_back(new Player(*p));
+        currentNumberOfPlayers++;
+    }
+    else if (const Refree* r = dynamic_cast<const Refree*>(e)) {
+        allWorkers.push_back(new Refree(*r));
+        currentNumberOfReferees++;
+    }
 }
 
 void League::addOwner(const Owner* o) {
-    allOwners.push_back(const_cast<Owner*>(o));  // Add to the owners list
+    allOwners.push_back(const_cast<Owner*>(o));
     currentNumberOfOwners++;
 }
 

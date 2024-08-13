@@ -10,27 +10,24 @@ class League
 {
 protected:
     static constexpr int NUMBER_OF_DISTRICTS = 2;
-    list<District> pAllDistricts;  // Changed to std::list<District>
+    list<District> pAllDistricts;
     int currentNumberOfWorkers;
     int currentNumberOfOwners;
     int currentNumberOfPlayers;
     int currentNumberOfReferees;
-    list<Person*> allWorkers;  // Changed to std::list<Person*>
-    list<Owner*> allOwners;  // Changed to std::list<Owner*>
+    list<Person*> allWorkers;  
+    list<Owner*> allOwners;  
 
 public:
     League();
-    League(const League& other);
-    League(League&& other);
-    ~League();
 
     list<District>& getDistricts();
     int getCurrentNumberOfWorkers() const;
     int getCurrentNumberOfOwners() const;
     int getCurrentNumberOfPlayers() const;
     int getCurrentNumberOfReferees() const;
-    list<Person*>& getAllWorkers();  // Changed to std::list<Person*>&
-    list<Owner*>& getAllOwners();  // Changed to std::list<Owner*>&
+    list<Person*>& getAllWorkers(); 
+    list<Owner*>& getAllOwners(); 
 
     void setDistrict(const District& d);
     void setCurrentNumberOfWorkers(const int newNum);

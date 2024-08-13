@@ -6,21 +6,6 @@ Team::Team() : teamName(""), numberOfWins(0), numberOfLoses(0) {}
 Team::Team(const string& teamName, const Owner& owner, const Court& court, const list<Player>& players)
     : teamName(teamName), rOwner(owner), rCourt(court), pAllPlayers(players), numberOfWins(0), numberOfLoses(0) {}
 
-Team::Team(const Team& other)
-    : teamName(other.teamName), rOwner(other.rOwner), rCourt(other.rCourt),
-    pAllPlayers(other.pAllPlayers), numberOfWins(other.numberOfWins), numberOfLoses(other.numberOfLoses) {}
-
-Team::Team(Team&& other) 
-    : teamName(move(other.teamName)), rOwner(move(other.rOwner)), rCourt(move(other.rCourt)),
-    pAllPlayers(move(other.pAllPlayers)), numberOfWins(other.numberOfWins), numberOfLoses(other.numberOfLoses) {
-    other.numberOfWins = 0;
-    other.numberOfLoses = 0;
-}
-
-Team::~Team() {
-    // The list will automatically manage its memory, so no need for manual deletion
-}
-
 void Team::setName(const string& name) {
     teamName = name;
 }
@@ -74,28 +59,15 @@ const Team& Team::operator+(const Player& other) {
     return *this;
 }
 
-Team& Team::operator=(const Team& other) {
-    if (this != &other) {
-        teamName = other.teamName;
-        rOwner = other.rOwner;
-        rCourt = other.rCourt;
-        pAllPlayers = other.pAllPlayers;
-        numberOfWins = other.numberOfWins;
-        numberOfLoses = other.numberOfLoses;
-    }
-    return *this;
-}
-
 ostream& operator<<(ostream& os, const Team& team) {
-    os << "Team Name: " << team.getName() << endl;
-    os << "Owner: " << team.rOwner.getName() << endl;
-    os << "Court: " << team.rCourt.getCourtName() << endl;
-    os << "Number of Wins: " << team.getNumberOfWins() << endl;
-    os << "Number of Loses: " << team.getNumberOfLoses() << endl;
-    os << "Number of Players: " << team.getNumberOfPlayers() << endl;
+    os << "Team Name: " << team.getName() << endl << endl;
+    os << "Owner: " << team.rOwner.getName() << ", Budget: " << team.rOwner.getBudget() << endl << endl;
+    os << team.rCourt << endl << endl;
+    os << "Record: " << team.getNumberOfWins() << " - " << team.getNumberOfLoses() << endl << endl;
     os << "Players: " << endl;
     for (const auto& player : team.getPlayers()) {
-        os << player.getName() << endl;
+        os << "#" << (player).getPlayerNumber() << ", " << (player).getName() << ", " << (player).positionNames[player.getPlayerPosition()] << endl;
     }
+    os << "----------------------------" << endl;
     return os;
 }

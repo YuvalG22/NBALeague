@@ -21,8 +21,7 @@ protected:
 
 public:
     Match();
-    Match(const Refree& ref, const Team& teamA, const Team& teamB, int resA, int resB, const Court& court, const Date gameDate);
-    ~Match();
+    Match(const Refree& ref, Team& teamA, Team& teamB, int resA, int resB, const Court& court, const Date gameDate);
 
     const Refree& getRefree() const;
     Team& getTeamA() const;

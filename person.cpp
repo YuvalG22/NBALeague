@@ -11,15 +11,6 @@ Person::Person() : person_id(0), name("nullptr"), dateOfBirth(Date()), gender(MA
 Person::Person(const int pid, const std::string& name, const Date dob, const eGenderType gender, const std::string& address)
     : person_id(pid), name(name), dateOfBirth(dob), gender(gender), address(address) {}
 
-Person::Person(const Person& other)
-    : person_id(other.person_id), name(other.name), dateOfBirth(other.dateOfBirth), gender(other.gender), address(other.address) {}
-
-Person::Person(Person&& other)
-    : person_id(other.person_id), name(std::move(other.name)), dateOfBirth(other.dateOfBirth),
-    gender(other.gender), address(std::move(other.address)) {}
-
-Person::~Person() = default;
-
 void Person::setPID(const int id) {
     person_id = id;
 }
@@ -38,17 +29,6 @@ void Person::setGender(const eGenderType gen) {
 
 void Person::setAddress(const std::string& address) {
     this->address = address;
-}
-
-Person& Person::operator=(const Person& other) {
-    if (this != &other) {
-        person_id = other.person_id;
-        name = other.name;
-        dateOfBirth = other.dateOfBirth;
-        gender = other.gender;
-        address = other.address;
-    }
-    return *this;
 }
 
 ostream& operator<<(std::ostream& os, const Person& s) {

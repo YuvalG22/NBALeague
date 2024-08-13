@@ -13,19 +13,16 @@ using namespace std;
 class Team
 {
 protected:
-    string teamName;  // Changed from char* to std::string
+    string teamName; 
     Owner rOwner;
     Court rCourt;
-    list<Player> pAllPlayers;  // Changed from Player** to std::list<Player>
+    list<Player> pAllPlayers; 
     int numberOfWins;
     int numberOfLoses;
 
 public:
     Team();
     Team(const string& teamName, const Owner& owner, const Court& court, const list<Player>& players);
-    Team(const Team& other);
-    Team(Team&& other);  
-    ~Team();
 
     void setName(const string& name);
     void setNumberOfWins(int wins);
@@ -37,12 +34,11 @@ public:
     int getNumberOfLoses() const;
     int getNumberOfPlayers() const;
     const Court& getCourt() const;
-    const list<Player>& getPlayers() const;  // Added getter for players
+    const list<Player>& getPlayers() const;
 
     void incrementWins();
     void incrementLosses();
-    const Team& operator+(const Player& other);  // Add Player
-    Team& operator=(const Team& other);
+    const Team& operator+(const Player& other);
     friend ostream& operator<<(ostream& os, const Team& team);
 };
 

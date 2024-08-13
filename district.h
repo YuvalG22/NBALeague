@@ -16,11 +16,10 @@ public:
     static constexpr int NUMBER_OF_TEAMS = 12;
     static constexpr int NUMBER_OF_GAMES_SEASON = 72;
     enum eAreaType { EAST, WEST, eNumOfTypes };
-    static const std::string areas[eNumOfTypes];  // Changed to static
+    static const std::string areas[eNumOfTypes];
 
     District();
     District(const std::string& area, int currentNumberOfMatches, int currentNumberOfTeams);
-    District(const District& other);
     const District& operator+(const Team& toAdd);
     const District& operator+(const Match& toAdd);
 

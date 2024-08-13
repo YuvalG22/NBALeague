@@ -14,9 +14,6 @@ class Person
 
 		Person();
 		Person(const int pid, const string& name, const Date dob, const eGenderType gender, const string& address);
-		Person(const Person& other);
-		Person(Person&& other);
-		virtual ~Person();
 
 		const int getPID() const { return person_id; }
 		const string& getName() const { return name; }
@@ -29,8 +26,6 @@ class Person
 		void setDate(const Date& date);
 		void setGender(const eGenderType gen);
 		void setAddress(const string& address);
-
-		Person& operator=(const Person& other);
 		virtual void toOs(ostream& os) const = 0 {
 			
 		}

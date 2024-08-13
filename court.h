@@ -13,14 +13,10 @@ protected:
 public:
 	Court();
 	Court(const string& courtName, const int numberOfSeats);
-	Court(const Court& other);
-	Court(Court&& other);
-	~Court();
 
 	const string& getCourtName() const;
 	int getNumberOfSeats() const;
 	void setCourtName(const string& name);
-	Court& operator=(const Court& other);
 	friend ostream& operator<<(ostream& os, const Court& court);
 
 };

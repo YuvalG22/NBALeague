@@ -30,16 +30,6 @@ void Refree::setNumberOfMatches(const int number) {
     numberOfMatches = number;
 }
 
-Refree& Refree::operator=(const Refree& other) {
-    if (this != &other) {
-        Employee::operator=(other);
-
-        rank = other.rank;
-        numberOfMatches = other.numberOfMatches;
-    }
-    return *this;
-}
-
 void Refree::toOs(ostream& os) const {
     Employee::toOs(os);
     os << "Rank: " << getRank() << endl;

@@ -17,7 +17,6 @@ static constexpr int EXIT = -1;
 void showLeagueMenu(League& l);
 void showDistrictMenu(League& l, District& d, const std::string& districtName);
 void showNewWorkerMenu(League& l);
-void printTeams(const std::list<Team>& teams);
 
 // Creators
 
@@ -26,7 +25,7 @@ void createEmployee(int* pid, std::string& name, Date* date, Person::eGenderType
 Owner* createOwner();
 Player* createPlayer();
 Refree* createRefree();
-Team* createTeam(std::list<Person*>& allWorkers, Owner* owner);
+Team* createTeam(std::list<Person*>& allWorkers, list<Owner*>& allOwners);
 Match* createMatch(std::list<Team>& teams, std::list<Person*>& allWorkers);
 
 
@@ -129,12 +128,7 @@ void showDistrictMenu(League& l, District& d, const std::string& districtName)
                 showDistrictMenu(l, d, districtName);
             }
             else {
-                // Get the first owner
-                Owner* owner = l.getAllOwners().front(); // Assuming getAllOwners() returns a list of Owner* 
-
-                // Create the team using the first owner
-                Team* t = createTeam(l.getAllWorkers(), owner);
-                // Get the first owner
+                Team* t = createTeam(l.getAllWorkers(), l.getAllOwners());
                 d + *t;
                 break;
             }
@@ -168,8 +162,7 @@ void showDistrictMenu(League& l, District& d, const std::string& districtName)
 
         case PRINT_TEAM:
         {
-            const std::list<Team>& teams = d.getTeams();
-            for (const auto& team : teams)
+            for (const Team team : d.getTeams())
                 cout << team << endl;
             break;
         }
@@ -340,28 +333,40 @@ Refree* createRefree()
     return new Refree(Employee(pid, name, *date, gender, address, salary), rank, numOfMatches);
 }
 
-
-// Assume the relevant headers and other necessary code are already included.
-
-Team* createTeam(std::list<Person*>& allWorkers, Owner* owner) {
+Team* createTeam(list<Person*>& allWorkers, list<Owner*>& allOwners) {
     int selected = 0;
     int numOfSeats = 0;
-    std::string teamName;
+    string teamName;
+    Owner* o = nullptr;
 
     // Get the team name from the user
-    std::cout << "Please enter team's name: ";
-    std::cin.ignore();
-    std::getline(std::cin, teamName);
+    cout << "Please enter team's name: ";
+    cin.ignore();
+    getline(cin, teamName);
+    cout << endl;
+
+    int index = 1;
+    for (Owner* owner : allOwners) {
+        cout << index++ << ") " << owner->getName() << endl;
+    }
+    do {
+        selected = getIntWithPrompt("Please enter the number corresponding to the owner:") - 1;
+        auto it = allOwners.begin();
+        advance(it, selected);
+        if (it != allOwners.end()) {
+            o = *it;
+        }
+    } while (selected < 0 || selected >= allOwners.size());
 
     // Get the court name and number of seats
-    std::string courtName;
-    std::cout << "Please enter court's name: ";
-    std::getline(std::cin, courtName);
+    string courtName;
+    cout << "Please enter court's name: ";
+    getline(cin, courtName);
     numOfSeats = getIntWithPrompt("Please enter court's number of seats:");
-    std::cout << std::endl;
+    cout << endl;
 
     // Collect all available players
-    std::list<Player> teamPlayers;
+    list<Player> teamPlayers;
     for (Person* worker : allWorkers) {
         if (Player* p = dynamic_cast<Player*>(worker)) {
             teamPlayers.push_back(*p);
@@ -373,23 +378,23 @@ Team* createTeam(std::list<Person*>& allWorkers, Owner* owner) {
     do {
         int playerIndex = 1;
         for (const Player& player : teamPlayers) {
-            std::cout << playerIndex++ << ") " << player.getName() << std::endl;
+            cout << playerIndex++ << ") " << player.getName() << endl;
         }
         selected = getIntWithPrompt("Please enter the number corresponding to the player:") - 1;
 
         // Add player to the team if selected
         if (selected >= 0 && selected < teamPlayers.size()) {
             auto it = teamPlayers.begin();
-            std::advance(it, selected);
+            advance(it, selected);
             // Do nothing if player is already in the team
         }
 
         option = getIntWithPrompt("Add more players? 1 - yes, 0 - no");
-        std::cout << std::endl;
+        cout << endl;
     } while (option != 0);
 
     // Create and return the new Team
-    return new Team(teamName, *owner, Court(courtName, numOfSeats), teamPlayers);
+    return new Team(teamName, *o, Court(courtName, numOfSeats), teamPlayers);
 }
 
 
@@ -402,6 +407,11 @@ Match* createMatch(std::list<Team>& teams, std::list<Person*>& allWorkers)
     int awayScore;
     int day, month, year;
     int numOfReferees = 0;
+
+    std::cout << "Printing the addresses of the teams in the teams list:" << std::endl;
+    for (auto& team : teams) {
+        std::cout << "Team " << team.getName() << " is located at address: " << &team << std::endl;
+    }
 
     // Set match teams
     cout << "Select 2 teams from the list below:" << endl;
@@ -437,6 +447,10 @@ Match* createMatch(std::list<Team>& teams, std::list<Person*>& allWorkers)
         cout << endl;
     } while (awayTeam == nullptr);
 
+    std::cout << "Selected home team " << homeTeam->getName() << " at address: " << homeTeam << std::endl;
+    std::cout << "Selected home team " << awayTeam->getName() << " at address: " << awayTeam << std::endl;
+
+
     // Set match score
     homeScore = getIntWithPrompt("Choose home team score:");
     awayScore = getIntWithPrompt("Choose away team score:");
@@ -458,8 +472,9 @@ Match* createMatch(std::list<Team>& teams, std::list<Person*>& allWorkers)
 
     // Set referee
     cout << "Select a referee from the list below:" << endl;
+    int index = 1;
     for (Refree* ref : referees) {
-        cout << ref->getName() << endl;
+        cout << index++ << ") " << ref->getName() << endl;
     }
     do {
         selected = getIntWithPrompt("Please enter the number corresponding to the referee:") - 1;

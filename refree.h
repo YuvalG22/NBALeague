@@ -19,8 +19,6 @@ public:
 
 	void setRank(const float rank);
 	void setNumberOfMatches(const int number);
-
-	Refree& operator=(const Refree& other);
 	virtual void toOs(ostream& os) const override;
 	friend ostream& operator<<(ostream& os, const Refree& ref);
 
