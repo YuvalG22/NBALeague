@@ -1,11 +1,20 @@
 #include "league.h"
 
+League* League::instance = nullptr;
+
 League::League()
     : currentNumberOfWorkers(0), currentNumberOfOwners(0), currentNumberOfPlayers(0), currentNumberOfReferees(0) {
 
     // Initialize the list of districts with EAST and WEST
     pAllDistricts.push_back(District("East", 0, 0));  // Add EAST district
     pAllDistricts.push_back(District("West", 0, 0));  // Add WEST district
+}
+
+League* League::getInstance() {
+    if (instance == nullptr) {
+        instance = new League();
+    }
+    return instance;
 }
 
 list<District>& League::getDistricts() {

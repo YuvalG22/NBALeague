@@ -3,31 +3,38 @@
 
 #include "district.h"
 #include <iostream>
-#include <list>  // Added list
+#include <list>
 using namespace std;
 
 class League
 {
 protected:
-    static constexpr int NUMBER_OF_DISTRICTS = 2;
+    static League* instance;  // Static instance pointer
     list<District> pAllDistricts;
     int currentNumberOfWorkers;
     int currentNumberOfOwners;
     int currentNumberOfPlayers;
     int currentNumberOfReferees;
-    list<Person*> allWorkers;  
-    list<Owner*> allOwners;  
+    list<Person*> allWorkers;
+    list<Owner*> allOwners;
+
+    League();  // Private constructor
 
 public:
-    League();
+    // Public static method to get the single instance
+    static League* getInstance();
+
+    // Delete the copy constructor and assignment operator
+    League(const League&) = delete;
+    League& operator=(const League&) = delete;
 
     list<District>& getDistricts();
     int getCurrentNumberOfWorkers() const;
     int getCurrentNumberOfOwners() const;
     int getCurrentNumberOfPlayers() const;
     int getCurrentNumberOfReferees() const;
-    list<Person*>& getAllWorkers(); 
-    list<Owner*>& getAllOwners(); 
+    list<Person*>& getAllWorkers();
+    list<Owner*>& getAllOwners();
 
     void setDistrict(const District& d);
     void setCurrentNumberOfWorkers(const int newNum);

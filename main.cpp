@@ -44,9 +44,8 @@ enum eChoiseInner { NEW_OWNER = 1, NEW_PLAYER, NEW_REFREE };
 
 int main()
 {
-    League* l1 = new League();
+    League* l1 = League::getInstance();  // Use Singleton getInstance()
     showLeagueMenu(*l1);
-    delete l1; // Properly clean up
     return 0;
 }
 
