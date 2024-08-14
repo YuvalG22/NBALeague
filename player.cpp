@@ -71,4 +71,3 @@ ostream& operator<<(ostream& os, const Player& player) {
     player.toOs(os);
     return os;
 }
-

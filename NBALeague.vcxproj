@@ -23,6 +23,7 @@
     <ClInclude Include="date.h" />
     <ClInclude Include="district.h" />
     <ClInclude Include="employee.h" />
+    <ClInclude Include="General.h" />
     <ClInclude Include="league.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="match.h" />
@@ -37,6 +38,7 @@
     <ClCompile Include="date.cpp" />
     <ClCompile Include="district.cpp" />
     <ClCompile Include="employee.cpp" />
+    <ClCompile Include="General.cpp" />
     <ClCompile Include="league.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="match.cpp" />

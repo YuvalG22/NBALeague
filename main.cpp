@@ -1,6 +1,7 @@
 #pragma warning(disable: 4996)
 #include "league.h"
 #include "LinkedList.h"
+#include "general.h"
 #include <string>
 #include <iostream>
 #include <limits>
@@ -20,8 +21,8 @@ void showNewWorkerMenu(League& l);
 
 // Creators
 
-void createPerson(int* pid, std::string& name, Date* date, Person::eGenderType* gender, std::string& address);
-void createEmployee(int* pid, std::string& name, Date* date, Person::eGenderType* gender, std::string& address, float* salary);
+//void createPerson(int* pid, std::string& name, Date* date, Person::eGenderType* gender, std::string& address);
+//void createEmployee(int* pid, std::string& name, Date* date, Person::eGenderType* gender, std::string& address, float* salary);
 Owner* createOwner();
 Player* createPlayer();
 Refree* createRefree();
@@ -31,13 +32,13 @@ Match* createMatch(std::list<Team>& teams, std::list<Person*>& allWorkers);
 
 
 // General Read Functions
-int getIntWithPrompt(const char* message);
-int getIdWithPrompt(const char* message);
-float getFloatWithPrompt(const char* message);
-int getEnumSelection(const char* message, const char* const types[], const int numOfTypes);
-std::string getStrExactName(const char* msg);
-char* getDynStr(char* str);
-char* myGets(char* buffer, int size, FILE* source);
+//int getIntWithPrompt(const char* message);
+//int getIdWithPrompt(const char* message);
+//float getFloatWithPrompt(const char* message);
+//int getEnumSelection(const char* message, const char* const types[], const int numOfTypes);
+//std::string getStrExactName(const char* msg);
+//char* getDynStr(char* str);
+//char* myGets(char* buffer, int size, FILE* source);
 
 enum eChoise { NEW_TEAM = 1, NEW_WORKER, NEW_MATCH, PRINT_TEAM, PRINT_WORKER, PRINT_MATCH, GO_BACK };
 enum eChoiseInner { NEW_OWNER = 1, NEW_PLAYER, NEW_REFREE };
@@ -252,29 +253,29 @@ void showNewWorkerMenu(League& l)
     } while (selection < 1 || selection > 3);
 }
 
-void createPerson(int* pid, std::string& name, Date* date, Person::eGenderType* gender, std::string& address)
-{
-    int day, month, year;
-    *pid = getIdWithPrompt("Please enter person ID:");
-    getchar();
-    cout << "Please enter person name" << endl;
-    getline(cin, name);
-    cout << "Date of Birth" << endl;
-    day = getIntWithPrompt("Please enter day");
-    month = getIntWithPrompt("Please enter month");
-    year = getIntWithPrompt("Please enter year");
-    *date = Date(day, month, year);
-    *gender = static_cast<Person::eGenderType>(getEnumSelection("Please choose gender:", Person::genders, Person::eNumOfTypes));
-    getchar();
-    cout << "Please enter person address" << endl;
-    getline(cin, address);
-}
-
-void createEmployee(int* pid, std::string& name, Date* date, Person::eGenderType* gender, std::string& address, float* salary)
-{
-    createPerson(pid, name, date, gender, address);
-    *salary = getFloatWithPrompt("Please enter salary:");
-}
+//void createPerson(int* pid, std::string& name, Date* date, Person::eGenderType* gender, std::string& address)
+//{
+//    int day, month, year;
+//    *pid = getIdWithPrompt("Please enter person ID:");
+//    getchar();
+//    cout << "Please enter person name" << endl;
+//    getline(cin, name);
+//    cout << "Date of Birth" << endl;
+//    day = getIntWithPrompt("Please enter day");
+//    month = getIntWithPrompt("Please enter month");
+//    year = getIntWithPrompt("Please enter year");
+//    *date = Date(day, month, year);
+//    *gender = static_cast<Person::eGenderType>(getEnumSelection("Please choose gender:", Person::genders, Person::eNumOfTypes));
+//    getchar();
+//    cout << "Please enter person address" << endl;
+//    getline(cin, address);
+//}
+//
+//void createEmployee(int* pid, std::string& name, Date* date, Person::eGenderType* gender, std::string& address, float* salary)
+//{
+//    createPerson(pid, name, date, gender, address);
+//    *salary = getFloatWithPrompt("Please enter salary:");
+//}
 
 Owner* createOwner()
 {
@@ -323,7 +324,7 @@ Refree* createRefree()
 {
     int pid, numOfMatches;
     float rank, salary;
-    std::string name, address;
+    string name, address;
     Person::eGenderType gender;
     Date* date = new Date();
     createEmployee(&pid, name, date, &gender, address, &salary);
@@ -494,126 +495,126 @@ Match* createMatch(std::list<Team>& teams, std::list<Person*>& allWorkers)
 }
 
 //General Functions
-int getIntWithPrompt(const char* message)
-{
-    int num;
-    while (true) {
-        cout << message << endl;
-        cin >> num;
-
-        // Check if the input is an integer
-        if (cin.fail()) {
-            // If not, clear the error flag
-            cin.clear();
-            // Ignore the rest of the input until a newline
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Invalid input. Please enter an integer." << endl;
-        }
-        else {
-            // Valid input, consume the newline character and return the number
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            return num;
-        }
-    }
-}
-
-int getIdWithPrompt(const char* message)
-{
-    char input[10];  // One extra space for the null-terminator
-    bool valid = false;
-
-    while (!valid) {
-        cout << message << endl;
-        cin.clear();
-        cin >> input;
-
-        // Check if the input has exactly 9 digits and consists only of digits
-        int length = 0;
-        valid = true;
-        for (int i = 0; input[i] != '\0'; ++i) {
-            if (!isdigit(input[i])) {
-                valid = false;
-                break;
-            }
-            length++;
-        }
-
-        if (length != 9) {
-            valid = false;
-        }
-
-        if (!valid) {
-            cout << "Invalid input. Please enter a 9-digit number." << endl;
-        }
-    }
-
-    return atoi(input);  // Convert the valid 9-digit string to an integer
-}
-
-float getFloatWithPrompt(const char* message)
-{
-    float num;
-    while (true) {
-        cout << message << endl;
-        cin >> num;
-
-        // Check if the input is a float
-        if (cin.fail()) {
-            // If not, clear the error flag
-            cin.clear();
-            // Ignore the rest of the input until a newline
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Invalid input. Please enter a float." << endl;
-        }
-        else {
-            // Valid input, consume the newline character and return the number
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            return num;
-        }
-    }
-}
-
-int getEnumSelection(const char* message, const char* const types[], const int numOfTypes)
-{
-    int enumChoice;
-    do
-    {
-        cout << message << endl;
-        for (int i = 0; i < numOfTypes; ++i)
-        {
-            cout << i + 1 << ") " << types[i] << endl;
-        }
-        cin >> enumChoice;
-    } while (enumChoice < 1 || enumChoice > numOfTypes);
-
-    return enumChoice - 1;  // Adjust to zero-based index
-}
-
-std::string getStrExactName(const char* msg)
-{
-    std::string str;
-    cout << msg << "\t";
-    getline(cin, str);
-    return str;
-}
-
-char* myGets(char* buffer, int size, FILE* source)
-{
-    char* ok;
-    if (buffer != NULL && size > 0)
-    {
-        do { //skip only '\n' strings
-            ok = fgets(buffer, size, source);
-        } while (ok && ((strlen(buffer) <= 1) || (isspace(buffer[0]))));
-        if (ok)
-        {
-            char* back = buffer + strlen(buffer);
-            //trim end spaces
-            while ((buffer < back) && (isspace(*--back)));
-            *(back + 1) = '\0';
-            return buffer;
-        }
-        buffer[0] = '\0';
-    }
-    return NULL;
-}
+//int getIntWithPrompt(const char* message)
+//{
+//    int num;
+//    while (true) {
+//        cout << message << endl;
+//        cin >> num;
+//
+//        // Check if the input is an integer
+//        if (cin.fail()) {
+//            // If not, clear the error flag
+//            cin.clear();
+//            // Ignore the rest of the input until a newline
+//            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+//            cout << "Invalid input. Please enter an integer." << endl;
+//        }
+//        else {
+//            // Valid input, consume the newline character and return the number
+//            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+//            return num;
+//        }
+//    }
+//}
+//
+//int getIdWithPrompt(const char* message)
+//{
+//    char input[10];  // One extra space for the null-terminator
+//    bool valid = false;
+//
+//    while (!valid) {
+//        cout << message << endl;
+//        cin.clear();
+//        cin >> input;
+//
+//        // Check if the input has exactly 9 digits and consists only of digits
+//        int length = 0;
+//        valid = true;
+//        for (int i = 0; input[i] != '\0'; ++i) {
+//            if (!isdigit(input[i])) {
+//                valid = false;
+//                break;
+//            }
+//            length++;
+//        }
+//
+//        if (length != 9) {
+//            valid = false;
+//        }
+//
+//        if (!valid) {
+//            cout << "Invalid input. Please enter a 9-digit number." << endl;
+//        }
+//    }
+//
+//    return atoi(input);  // Convert the valid 9-digit string to an integer
+//}
+//
+//float getFloatWithPrompt(const char* message)
+//{
+//    float num;
+//    while (true) {
+//        cout << message << endl;
+//        cin >> num;
+//
+//        // Check if the input is a float
+//        if (cin.fail()) {
+//            // If not, clear the error flag
+//            cin.clear();
+//            // Ignore the rest of the input until a newline
+//            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+//            cout << "Invalid input. Please enter a float." << endl;
+//        }
+//        else {
+//            // Valid input, consume the newline character and return the number
+//            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+//            return num;
+//        }
+//    }
+//}
+//
+//int getEnumSelection(const char* message, const char* const types[], const int numOfTypes)
+//{
+//    int enumChoice;
+//    do
+//    {
+//        cout << message << endl;
+//        for (int i = 0; i < numOfTypes; ++i)
+//        {
+//            cout << i + 1 << ") " << types[i] << endl;
+//        }
+//        cin >> enumChoice;
+//    } while (enumChoice < 1 || enumChoice > numOfTypes);
+//
+//    return enumChoice - 1;  // Adjust to zero-based index
+//}
+//
+//std::string getStrExactName(const char* msg)
+//{
+//    std::string str;
+//    cout << msg << "\t";
+//    getline(cin, str);
+//    return str;
+//}
+//
+//char* myGets(char* buffer, int size, FILE* source)
+//{
+//    char* ok;
+//    if (buffer != NULL && size > 0)
+//    {
+//        do { //skip only '\n' strings
+//            ok = fgets(buffer, size, source);
+//        } while (ok && ((strlen(buffer) <= 1) || (isspace(buffer[0]))));
+//        if (ok)
+//        {
+//            char* back = buffer + strlen(buffer);
+//            //trim end spaces
+//            while ((buffer < back) && (isspace(*--back)));
+//            *(back + 1) = '\0';
+//            return buffer;
+//        }
+//        buffer[0] = '\0';
+//    }
+//    return NULL;
+//}
