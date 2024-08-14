@@ -21,7 +21,7 @@ static constexpr int EXIT = -1;
 void showLeagueMenu(League& l);
 void showDistrictMenu(League& l, District& d, const std::string& districtName);
 void showNewWorkerMenu(League& l);
-void createTestEntities(League& l);
+void createTestEntities(League& l, District& d);
 
 // Creators
 
@@ -50,7 +50,6 @@ enum eChoiseInner { NEW_OWNER = 1, NEW_PLAYER, NEW_REFREE };
 int main()
 {
     League* l1 = League::getInstance();  // Use Singleton getInstance()
-    createTestEntities(*l1);
     showLeagueMenu(*l1);
     return 0;
 }
@@ -102,6 +101,7 @@ void showLeagueMenu(League& l)
 
 void showDistrictMenu(League& l, District& d, const std::string& districtName)
 {
+    createTestEntities(l, d);
     int selection;
     cout << "*** NBA League Creator ***" << endl;
     cout << "*** Current District: " << districtName << " ***" << endl;
@@ -518,7 +518,7 @@ Match* createMatch(std::list<Team>& teams, std::list<Person*>& allWorkers)
     return nullptr;
 }
 
-void createTestEntities(League& l) {
+void createTestEntities(League& l, District& d) {
     Owner* owner1 = new Owner(1001, "Owner One", Date(1, 1, 1970), Person::eGenderType::MALE, "123 Owner St", 1000000);
     Owner* owner2 = new Owner(1002, "Owner Two", Date(2, 2, 1980), Person::eGenderType::FEMALE, "456 Owner Ave", 1500000);
     l.addOwner(owner1);
@@ -547,6 +547,8 @@ void createTestEntities(League& l) {
 
     Team* team1 = new Team("Team One", *owner1, Court("Court One", 15000), team1Players);
     Team* team2 = new Team("Team Two", *owner2, Court("Court Two", 18000), team2Players);
+    d + *team1;
+    d + *team2;
 }
 //General Functions
 //int getIntWithPrompt(const char* message)
