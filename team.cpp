@@ -42,6 +42,12 @@ const Court& Team::getCourt() const {
     return rCourt;
 }
 
+// Non-const version of getPlayers
+list<Player>& Team::getPlayers() {
+    return pAllPlayers;
+}
+
+// Const version of getPlayers
 const list<Player>& Team::getPlayers() const {
     return pAllPlayers;
 }
@@ -65,8 +71,8 @@ ostream& operator<<(ostream& os, const Team& team) {
     os << team.rCourt << endl << endl;
     os << "Record: " << team.getNumberOfWins() << " - " << team.getNumberOfLoses() << endl << endl;
     os << "Players: " << endl;
-    for (const auto& player : team.getPlayers()) {
-        os << "#" << (player).getPlayerNumber() << ", " << (player).getName() << ", " << (player).positionNames[player.getPlayerPosition()] << endl;
+    for (auto& player : team.getPlayers()) {  // Use non-const reference
+        os << "#" << player.getPlayerNumber() << ", " << player.getName() << ", " << player.positionNames[player.getPlayerPosition()] << endl;
     }
     os << "----------------------------" << endl;
     return os;

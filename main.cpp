@@ -167,18 +167,30 @@ void showDistrictMenu(League& l, District& d, const std::string& districtName)
 
         case PRINT_TEAM:
         {
-            for (const Team team : d.getTeams())
+            for (const Team& team : d.getTeams())
                 cout << team << endl;
             break;
         }
 
         case PRINT_WORKER:
         {
-            for (Person* worker : l.getAllWorkers())
-                cout << *worker << endl;
+            for (Person* worker : l.getAllWorkers()) {
+                if (Player* player = dynamic_cast<Player*>(worker)) {
+                    std::cout << "Player name: " << player->getName() << ", Matches Played: " << player->getPlayerMatches() << std::endl;
+                }
+                else {
+                    std::cout << *worker << std::endl;
+                }
+            }
 
-            for (Owner* owner : l.getAllOwners())
-                cout << *owner << endl;
+            for (Owner* owner : l.getAllOwners()) {
+                if (Player* player = dynamic_cast<Player*>(owner)) {
+                    std::cout << "Player name: " << player->getName() << ", Matches Played: " << player->getPlayerMatches() << std::endl;
+                }
+                else {
+                    std::cout << *owner << std::endl;
+                }
+            }
 
             break;
         }
@@ -497,15 +509,12 @@ Match* createMatch(std::list<Team>& teams, std::list<Person*>& allWorkers)
             match.attach(new RefreeObserver(*r));
 
             // Attach player observers from both teams
-            for (auto it = homeTeam->getPlayers().begin(); it != homeTeam->getPlayers().end(); ++it) {
-                Player& player = const_cast<Player&>(*it); // Use const_cast to remove constness
-                match.attach(new PlayerObserver(player));
+            for (auto& player : homeTeam->getPlayers()) {
+                match.attach(new PlayerObserver(player)); // PlayerObserver takes non-const Player reference
             }
-            for (auto it = awayTeam->getPlayers().begin(); it != awayTeam->getPlayers().end(); ++it) {
-                Player& player = const_cast<Player&>(*it); // Use const_cast to remove constness
-                match.attach(new PlayerObserver(player));
+            for (auto& player : awayTeam->getPlayers()) {
+                match.attach(new PlayerObserver(player)); // PlayerObserver takes non-const Player reference
             }
-
 
             // Notify observers (this will update their match counts)
             match.notify();

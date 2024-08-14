@@ -1,4 +1,3 @@
-// MatchSubject.h
 #ifndef MATCH_SUBJECT_H
 #define MATCH_SUBJECT_H
 
@@ -19,7 +18,6 @@ public:
 
     void attach(IObserver* observer);
     void notify();
-
 };
 
 #endif // MATCH_SUBJECT_H

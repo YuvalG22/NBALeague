@@ -13,10 +13,10 @@ using namespace std;
 class Team
 {
 protected:
-    string teamName; 
+    string teamName;
     Owner rOwner;
     Court rCourt;
-    list<Player> pAllPlayers; 
+    list<Player> pAllPlayers;
     int numberOfWins;
     int numberOfLoses;
 
@@ -34,7 +34,9 @@ public:
     int getNumberOfLoses() const;
     int getNumberOfPlayers() const;
     const Court& getCourt() const;
-    const list<Player>& getPlayers() const;
+
+    list<Player>& getPlayers();  // Non-const reference
+    const list<Player>& getPlayers() const;  // Const reference
 
     void incrementWins();
     void incrementLosses();

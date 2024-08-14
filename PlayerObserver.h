@@ -6,7 +6,7 @@
 
 class PlayerObserver : public IObserver {
 private:
-    Player& player;
+    Player& player;  // Now this is a non-const reference
 
 public:
     PlayerObserver(Player& player);
