@@ -6,6 +6,9 @@
 #include <iostream>
 #include <limits>
 #include <list>
+#include "MatchSubject.h"
+#include "RefreeObserver.h"
+#include "PlayerObserver.h"
 
 /*
 * C++ project- NBA league
@@ -18,6 +21,7 @@ static constexpr int EXIT = -1;
 void showLeagueMenu(League& l);
 void showDistrictMenu(League& l, District& d, const std::string& districtName);
 void showNewWorkerMenu(League& l);
+void createTestEntities(League& l);
 
 // Creators
 
@@ -46,6 +50,7 @@ enum eChoiseInner { NEW_OWNER = 1, NEW_PLAYER, NEW_REFREE };
 int main()
 {
     League* l1 = League::getInstance();  // Use Singleton getInstance()
+    createTestEntities(*l1);
     showLeagueMenu(*l1);
     return 0;
 }
@@ -450,7 +455,6 @@ Match* createMatch(std::list<Team>& teams, std::list<Person*>& allWorkers)
     std::cout << "Selected home team " << homeTeam->getName() << " at address: " << homeTeam << std::endl;
     std::cout << "Selected home team " << awayTeam->getName() << " at address: " << awayTeam << std::endl;
 
-
     // Set match score
     homeScore = getIntWithPrompt("Choose home team score:");
     awayScore = getIntWithPrompt("Choose away team score:");
@@ -486,7 +490,27 @@ Match* createMatch(std::list<Team>& teams, std::list<Person*>& allWorkers)
             // Set court
             Court c = homeTeam->getCourt();
 
-            // Set match
+            // Create match subject and attach observers
+            MatchSubject match(*homeTeam, *awayTeam, *r);
+
+            // Attach the referee observer
+            match.attach(new RefreeObserver(*r));
+
+            // Attach player observers from both teams
+            for (auto it = homeTeam->getPlayers().begin(); it != homeTeam->getPlayers().end(); ++it) {
+                Player& player = const_cast<Player&>(*it); // Use const_cast to remove constness
+                match.attach(new PlayerObserver(player));
+            }
+            for (auto it = awayTeam->getPlayers().begin(); it != awayTeam->getPlayers().end(); ++it) {
+                Player& player = const_cast<Player&>(*it); // Use const_cast to remove constness
+                match.attach(new PlayerObserver(player));
+            }
+
+
+            // Notify observers (this will update their match counts)
+            match.notify();
+
+            // Set match and return it
             return new Match(*r, *homeTeam, *awayTeam, homeScore, awayScore, c, date);
         }
     } while (selected < 0 || selected >= referees.size());
@@ -494,6 +518,36 @@ Match* createMatch(std::list<Team>& teams, std::list<Person*>& allWorkers)
     return nullptr;
 }
 
+void createTestEntities(League& l) {
+    Owner* owner1 = new Owner(1001, "Owner One", Date(1, 1, 1970), Person::eGenderType::MALE, "123 Owner St", 1000000);
+    Owner* owner2 = new Owner(1002, "Owner Two", Date(2, 2, 1980), Person::eGenderType::FEMALE, "456 Owner Ave", 1500000);
+    l.addOwner(owner1);
+    l.addOwner(owner2);
+
+    // Players
+    Employee* player1Employee = new Employee(2001, "Player One", Date(3, 3, 1990), Person::eGenderType::MALE, "789 Player Rd", 50000);
+    Player* player1 = new Player(*player1Employee, 1, Player::POINT_GUARD, 3, 10, false);
+    l.addWorker(player1);
+    Employee* player2Employee = new Employee(2002, "Player Two", Date(4, 4, 1992), Person::eGenderType::MALE, "101 Player Blvd", 60000);
+    Player* player2 = new Player(*player2Employee, 2, Player::SHOOTING_GUARD, 1, 12, false);
+    l.addWorker(player2);
+    Employee* player3Employee = new Employee(2003, "Player Three", Date(5, 5, 1994), Person::eGenderType::FEMALE, "202 Player Ct", 55000);
+    Player* player3 = new Player(*player3Employee, 3, Player::SMALL_FORWARD, 2, 15, false);
+    l.addWorker(player3);
+    Employee* player4Employee = new Employee(2004, "Player Four", Date(6, 6, 1996), Person::eGenderType::FEMALE, "303 Player Ln", 65000);
+    Player* player4 = new Player(*player4Employee, 4, Player::POWER_FORWARD, 4, 18, false);
+    l.addWorker(player4);
+    // Referee
+    Employee* refreeEmployee = new Employee(3001, "Refree One", Date(7, 7, 1985), Person::eGenderType::MALE, "Refree Street", 70000);
+    Refree* refree1 = new Refree(*refreeEmployee, 9.5f, 20);
+    l.addWorker(refree1);
+    // Teams
+    list<Player> team1Players = { *player1, *player2 };
+    list<Player> team2Players = { *player3, *player4 };
+
+    Team* team1 = new Team("Team One", *owner1, Court("Court One", 15000), team1Players);
+    Team* team2 = new Team("Team Two", *owner2, Court("Court Two", 18000), team2Players);
+}
 //General Functions
 //int getIntWithPrompt(const char* message)
 //{

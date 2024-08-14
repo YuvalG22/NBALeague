@@ -34,6 +34,7 @@ int Player::getPlayerMatches() const {
     return numberOfMatches;
 }
 
+
 void Player::setPlayerNumber(int number) {
     playerNumber = number;
 }

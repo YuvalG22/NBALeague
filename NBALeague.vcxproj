@@ -24,13 +24,18 @@
     <ClInclude Include="district.h" />
     <ClInclude Include="employee.h" />
     <ClInclude Include="General.h" />
+    <ClInclude Include="IObserver.h" />
+    <ClInclude Include="ISubject.h" />
     <ClInclude Include="league.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="match.h" />
+    <ClInclude Include="MatchSubject.h" />
     <ClInclude Include="owner.h" />
     <ClInclude Include="person.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="PlayerObserver.h" />
     <ClInclude Include="refree.h" />
+    <ClInclude Include="RefreeObserver.h" />
     <ClInclude Include="team.h" />
   </ItemGroup>
   <ItemGroup>
@@ -39,13 +44,17 @@
     <ClCompile Include="district.cpp" />
     <ClCompile Include="employee.cpp" />
     <ClCompile Include="General.cpp" />
+    <ClCompile Include="ISubject.cpp" />
     <ClCompile Include="league.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="match.cpp" />
+    <ClCompile Include="MatchSubject.cpp" />
     <ClCompile Include="owner.cpp" />
     <ClCompile Include="person.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="PlayerObserver.cpp" />
     <ClCompile Include="refree.cpp" />
+    <ClCompile Include="refreeObserver.cpp" />
     <ClCompile Include="team.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
