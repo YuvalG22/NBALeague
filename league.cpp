@@ -8,6 +8,11 @@ League::League()
     pAllDistricts.push_back(District("West", 0, 0));  // Add WEST district
 }
 
+League& League::getInstance() {
+    static League instance;
+    return instance;
+}
+
 list<District>& League::getDistricts() {
     return pAllDistricts;
 }

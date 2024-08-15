@@ -55,6 +55,10 @@ const Player& Player::operator+() {
     return *this;
 }
 
+void Player::updateMatch(bool won) {
+    numberOfMatches++;
+}
+
 void Player::toOs(ostream& os) const {
     Employee::toOs(os);
     if (isOwner) {

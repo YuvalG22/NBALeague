@@ -3,7 +3,7 @@
 
 Team::Team() : teamName(""), numberOfWins(0), numberOfLoses(0) {}
 
-Team::Team(const string& teamName, const Owner& owner, const Court& court, const list<Player>& players)
+Team::Team(const string& teamName, const Owner& owner, const Court& court, const list<Player*> players)
     : teamName(teamName), rOwner(owner), rCourt(court), pAllPlayers(players), numberOfWins(0), numberOfLoses(0) {}
 
 void Team::setName(const string& name) {
@@ -42,7 +42,11 @@ const Court& Team::getCourt() const {
     return rCourt;
 }
 
-const list<Player>& Team::getPlayers() const {
+list<Player*> Team::getPlayers() {
+    return pAllPlayers;
+}
+
+const list<Player*> Team::getPlayersConst() const{
     return pAllPlayers;
 }
 
@@ -54,9 +58,18 @@ void Team::incrementLosses() {
     numberOfLoses++;
 }
 
-const Team& Team::operator+(const Player& other) {
+Team& Team::operator+(Player* other) {
     pAllPlayers.push_back(other);
     return *this;
+}
+
+void Team::updateMatch(bool won) {
+    if (won) {
+        incrementWins();
+    }
+    else {
+        incrementLosses();
+    }
 }
 
 ostream& operator<<(ostream& os, const Team& team) {
@@ -65,8 +78,8 @@ ostream& operator<<(ostream& os, const Team& team) {
     os << team.rCourt << endl << endl;
     os << "Record: " << team.getNumberOfWins() << " - " << team.getNumberOfLoses() << endl << endl;
     os << "Players: " << endl;
-    for (const auto& player : team.getPlayers()) {
-        os << "#" << (player).getPlayerNumber() << ", " << (player).getName() << ", " << (player).positionNames[player.getPlayerPosition()] << endl;
+    for (const auto& player : team.getPlayersConst()) {
+        os << "#" << (player)->getPlayerNumber() << ", " << (player)->getName() << ", " << (player)->positionNames[player->getPlayerPosition()] << endl;
     }
     os << "----------------------------" << endl;
     return os;

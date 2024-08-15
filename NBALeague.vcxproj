@@ -23,13 +23,17 @@
     <ClInclude Include="date.h" />
     <ClInclude Include="district.h" />
     <ClInclude Include="employee.h" />
+    <ClInclude Include="GeneralFunctions.h" />
     <ClInclude Include="league.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="match.h" />
+    <ClInclude Include="Observer.h" />
     <ClInclude Include="owner.h" />
     <ClInclude Include="person.h" />
+    <ClInclude Include="PersonFactory.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="refree.h" />
+    <ClInclude Include="Subject.h" />
     <ClInclude Include="team.h" />
   </ItemGroup>
   <ItemGroup>

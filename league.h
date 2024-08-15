@@ -9,6 +9,7 @@ using namespace std;
 class League
 {
 protected:
+    League();
     static constexpr int NUMBER_OF_DISTRICTS = 2;
     list<District> pAllDistricts;
     int currentNumberOfWorkers;
@@ -19,8 +20,7 @@ protected:
     list<Owner*> allOwners;  
 
 public:
-    League();
-
+    static League& getInstance();
     list<District>& getDistricts();
     int getCurrentNumberOfWorkers() const;
     int getCurrentNumberOfOwners() const;

@@ -8,7 +8,7 @@
 
 using namespace std;
 
-class Match
+class Match : public Subject
 {
 protected:
     Refree* refree;
@@ -21,7 +21,7 @@ protected:
 
 public:
     Match();
-    Match(const Refree& ref, Team& teamA, Team& teamB, int resA, int resB, const Court& court, const Date gameDate);
+    Match(Refree& ref, Team& teamA, Team& teamB, int resA, int resB, const Court& court, const Date gameDate);
 
     const Refree& getRefree() const;
     Team& getTeamA() const;
@@ -36,6 +36,8 @@ public:
     void setTeamB(const Team& team);
     void setDate(const Date& date);
     void setCourt(const Court& court);
+
+    void playMatch();
 
     friend ostream& operator<<(ostream& os, const Match& match);
 };

@@ -21,7 +21,7 @@ public:
     District();
     District(const std::string& area, int currentNumberOfMatches, int currentNumberOfTeams);
     const District& operator+(const Team& toAdd);
-    const District& operator+(const Match& toAdd);
+    const District& operator+(Match& toAdd);
 
     eAreaType getArea() const { return area; }
     list<Team>& getTeams() { return pAllTeams; }

@@ -3,8 +3,22 @@
 Match::Match()
     : refree(nullptr), teamA(nullptr), teamB(nullptr), resultA(0), resultB(0), court(nullptr), gameDate(Date()) {}
 
-Match::Match(const Refree& ref, Team& teamA, Team& teamB, int resA, int resB, const Court& court, const Date gameDate)
-    : refree(new Refree(ref)), teamA(&teamA), teamB(&teamB), resultA(resA), resultB(resB), court(new Court(court)), gameDate(gameDate) {}
+Match::Match(Refree& ref, Team& teamA, Team& teamB, int resA, int resB, const Court& court, const Date gameDate)
+    : refree(&ref), teamA(&teamA), teamB(&teamB), resultA(resA), resultB(resB), court(new Court(court)), gameDate(gameDate) {
+
+    attach(&teamA);
+    attach(&teamB);
+
+    attach(&ref);
+
+    for (Player* player : teamA.getPlayers()) {
+        attach(player);
+    }
+
+    for (Player* player : teamB.getPlayers()) {   
+        attach(player);
+    }
+}
 
 const Refree& Match::getRefree() const {
     return *refree;
@@ -52,6 +66,11 @@ void Match::setDate(const Date& date) {
 
 void Match::setCourt(const Court& court) {
     this->court = new Court(court);
+}
+
+void Match::playMatch() {
+    bool teamAWon = resultA > resultB;
+    notifyMatch(teamAWon);
 }
 
 ostream& operator<<(ostream& os, const Match& match) {

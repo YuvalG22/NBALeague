@@ -5,10 +5,11 @@
 #include <string>
 #include "employee.h"
 #include "owner.h"
+#include "Observer.h"
 
 using namespace std;
 
-class Player : public Employee, public Owner
+class Player : public Employee, public Owner, public Observer
 {
 public:
     enum ePositionType { POINT_GUARD, SHOOTING_GUARD, SMALL_FORWARD, POWER_FORWARD, CENTER, eNumOfTypes };
@@ -27,6 +28,8 @@ public:
     void setPlayerPosition(ePositionType pos);
     void setPlayerTitles(int newTitles);
     void setPlayerMatches(int newMatches);
+
+    void updateMatch(bool won) override;
 
     const Player& operator+(); // Add title
     virtual void toOs(ostream& os) const override;

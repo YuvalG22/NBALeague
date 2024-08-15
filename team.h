@@ -7,22 +7,24 @@
 #include "owner.h"
 #include "player.h"
 #include "court.h"
+#include "Observer.h"
+#include "Subject.h"
 
 using namespace std;
 
-class Team
+class Team : public Observer
 {
 protected:
     string teamName; 
     Owner rOwner;
     Court rCourt;
-    list<Player> pAllPlayers; 
+    list<Player*> pAllPlayers; 
     int numberOfWins;
     int numberOfLoses;
 
 public:
     Team();
-    Team(const string& teamName, const Owner& owner, const Court& court, const list<Player>& players);
+    Team(const string& teamName, const Owner& owner, const Court& court, const list<Player*> players);
 
     void setName(const string& name);
     void setNumberOfWins(int wins);
@@ -34,11 +36,14 @@ public:
     int getNumberOfLoses() const;
     int getNumberOfPlayers() const;
     const Court& getCourt() const;
-    const list<Player>& getPlayers() const;
+    list<Player*> getPlayers();
+    const list<Player*> getPlayersConst() const;
+
+    void updateMatch(bool won) override;
 
     void incrementWins();
     void incrementLosses();
-    const Team& operator+(const Player& other);
+    Team& operator+(Player* other);
     friend ostream& operator<<(ostream& os, const Team& team);
 };
 

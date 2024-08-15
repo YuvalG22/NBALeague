@@ -3,9 +3,10 @@
 
 #include <iostream>
 #include "employee.h"
+#include "Observer.h"
 using namespace std;
 
-class Refree : public Employee
+class Refree : public Employee, public Observer
 {
 protected:
 	float rank;
@@ -19,6 +20,9 @@ public:
 
 	void setRank(const float rank);
 	void setNumberOfMatches(const int number);
+
+	void updateMatch(bool won) override;
+
 	virtual void toOs(ostream& os) const override;
 	friend ostream& operator<<(ostream& os, const Refree& ref);
 

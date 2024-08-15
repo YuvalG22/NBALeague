@@ -30,6 +30,10 @@ void Refree::setNumberOfMatches(const int number) {
     numberOfMatches = number;
 }
 
+void Refree::updateMatch(bool won) {
+    numberOfMatches++;
+}
+
 void Refree::toOs(ostream& os) const {
     Employee::toOs(os);
     os << "Rank: " << getRank() << endl;
