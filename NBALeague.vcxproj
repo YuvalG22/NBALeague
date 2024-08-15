@@ -32,6 +32,7 @@
     <ClInclude Include="person.h" />
     <ClInclude Include="PersonFactory.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="PlayerObserver.h" />
     <ClInclude Include="refree.h" />
     <ClInclude Include="Subject.h" />
     <ClInclude Include="team.h" />
@@ -41,13 +42,18 @@
     <ClCompile Include="date.cpp" />
     <ClCompile Include="district.cpp" />
     <ClCompile Include="employee.cpp" />
+    <ClCompile Include="General.cpp" />
+    <ClCompile Include="ISubject.cpp" />
     <ClCompile Include="league.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="match.cpp" />
+    <ClCompile Include="MatchSubject.cpp" />
     <ClCompile Include="owner.cpp" />
     <ClCompile Include="person.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="PlayerObserver.cpp" />
     <ClCompile Include="refree.cpp" />
+    <ClCompile Include="refreeObserver.cpp" />
     <ClCompile Include="team.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -34,6 +34,7 @@ int Player::getPlayerMatches() const {
     return numberOfMatches;
 }
 
+
 void Player::setPlayerNumber(int number) {
     playerNumber = number;
 }
@@ -75,4 +76,3 @@ ostream& operator<<(ostream& os, const Player& player) {
     player.toOs(os);
     return os;
 }
-

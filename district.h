@@ -26,6 +26,7 @@ public:
     eAreaType getArea() const { return area; }
     list<Team>& getTeams() { return pAllTeams; }
     LinkedList<Match>* getMatches() { return &pAllMatches; }
+    const std::list<Team>& getTeams() const;
     void setArea(eAreaType area);
     int getNumOfTeams() const;
     int getNumOfMatches() const;

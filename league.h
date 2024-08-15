@@ -3,7 +3,7 @@
 
 #include "district.h"
 #include <iostream>
-#include <list>  // Added list
+#include <list>
 using namespace std;
 
 class League
@@ -16,8 +16,10 @@ protected:
     int currentNumberOfOwners;
     int currentNumberOfPlayers;
     int currentNumberOfReferees;
-    list<Person*> allWorkers;  
-    list<Owner*> allOwners;  
+    list<Person*> allWorkers;
+    list<Owner*> allOwners;
+
+    League();  // Private constructor
 
 public:
     static League& getInstance();
@@ -26,8 +28,8 @@ public:
     int getCurrentNumberOfOwners() const;
     int getCurrentNumberOfPlayers() const;
     int getCurrentNumberOfReferees() const;
-    list<Person*>& getAllWorkers(); 
-    list<Owner*>& getAllOwners(); 
+    list<Person*>& getAllWorkers();
+    list<Owner*>& getAllOwners();
 
     void setDistrict(const District& d);
     void setCurrentNumberOfWorkers(const int newNum);

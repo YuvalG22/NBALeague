@@ -40,7 +40,7 @@ private:
     int playerNumber;
     ePositionType position;
     int numberOfTitles;
-    int numberOfMatches;
+    mutable int numberOfMatches;
     bool isOwner;
 };
 

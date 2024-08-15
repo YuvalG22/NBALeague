@@ -1,5 +1,7 @@
 #include "league.h"
 
+League* League::instance = nullptr;
+
 League::League()
     : currentNumberOfWorkers(0), currentNumberOfOwners(0), currentNumberOfPlayers(0), currentNumberOfReferees(0) {
 

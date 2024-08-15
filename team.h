@@ -15,7 +15,7 @@ using namespace std;
 class Team : public Observer
 {
 protected:
-    string teamName; 
+    string teamName;
     Owner rOwner;
     Court rCourt;
     list<Player*> pAllPlayers; 

@@ -1,6 +1,7 @@
 #pragma warning(disable: 4996)
 #include "league.h"
 #include "LinkedList.h"
+#include "general.h"
 #include <string>
 #include <iostream>
 #include <limits>
@@ -19,6 +20,7 @@ static constexpr int EXIT = -1;
 void showLeagueMenu(League& l);
 void showDistrictMenu(League& l, District& d, const std::string& districtName);
 void showNewWorkerMenu(League& l);
+void createTestEntities(League& l, District& d);
 
 // Creators
 Team* createTeam(std::list<Person*>& allWorkers, list<Owner*>& allOwners);
@@ -81,6 +83,7 @@ void showLeagueMenu(League& l)
 
 void showDistrictMenu(League& l, District& d, const std::string& districtName)
 {
+    createTestEntities(l, d);
     int selection;
     cout << "*** NBA League Creator ***" << endl;
     cout << "*** Current District: " << districtName << " ***" << endl;
@@ -146,18 +149,30 @@ void showDistrictMenu(League& l, District& d, const std::string& districtName)
 
         case PRINT_TEAM:
         {
-            for (const Team team : d.getTeams())
+            for (const Team& team : d.getTeams())
                 cout << team << endl;
             break;
         }
 
         case PRINT_WORKER:
         {
-            for (Person* worker : l.getAllWorkers())
-                cout << *worker << endl;
+            for (Person* worker : l.getAllWorkers()) {
+                if (Player* player = dynamic_cast<Player*>(worker)) {
+                    std::cout << "Player name: " << player->getName() << ", Matches Played: " << player->getPlayerMatches() << std::endl;
+                }
+                else {
+                    std::cout << *worker << std::endl;
+                }
+            }
 
-            for (Owner* owner : l.getAllOwners())
-                cout << *owner << endl;
+            for (Owner* owner : l.getAllOwners()) {
+                if (Player* player = dynamic_cast<Player*>(owner)) {
+                    std::cout << "Player name: " << player->getName() << ", Matches Played: " << player->getPlayerMatches() << std::endl;
+                }
+                else {
+                    std::cout << *owner << std::endl;
+                }
+            }
 
             break;
         }
@@ -397,10 +412,8 @@ Match* createMatch(std::list<Team>& teams, std::list<Person*>& allWorkers)
             // Set court
             Court c = homeTeam->getCourt();
 
-            // Set match
-            return new Match(*r, *homeTeam, *awayTeam, homeScore, awayScore, c, date);
-        }
-    } while (selected < 0 || selected >= referees.size());
+            // Create match subject and attach observers
+            MatchSubject match(*homeTeam, *awayTeam, *r);
 
     return nullptr;
 }

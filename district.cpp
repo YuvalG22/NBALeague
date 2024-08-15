@@ -52,3 +52,8 @@ int District::getNumOfTeams() const {
 int District::getNumOfMatches() const {
     return currentNumberOfMatches;
 }
+
+const std::list<Team>& District::getTeams() const {
+    return pAllTeams;
+}
+

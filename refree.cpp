@@ -20,6 +20,7 @@ const int Refree::getNumberOfMatches() const {
     return numberOfMatches;
 }
 
+
 // Setter for rank
 void Refree::setRank(const float rank) {
     this->rank = rank;
